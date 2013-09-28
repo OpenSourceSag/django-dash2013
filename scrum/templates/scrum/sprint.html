@@ -1,0 +1,66 @@
+{% extends '_layout/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block extra_css %}
+    <link href="{% static 'scrum/css/sprint.css' %}" rel="stylesheet" media="screen">
+{% endblock %}
+{% block content %}
+    <header class="row">
+        <h2 id=sprint_title class="col-xs-12 title_font" type="text" autofocus=autofocus value="{{ sprint.name }}"></h2>
+    </header>
+    <div class="row">
+        <section id=todo class="col-sm-3">
+            <ul>
+                {% for todo in todos %}
+                    <li><div data-id={{ todo.id }} class="text_font">{{ todo.title }}</div></li>
+                {% empty %}
+                    <li>{% trans 'Yeah, nothing to do!' %}</li>
+                {% endfor %}
+            </ul>
+        </section>
+            
+        <section id=doing class="col-sm-3">
+            <ul>
+                {% for doing in doings %}
+                    <li><div data-id={{ doing.id }} class=" text_font">{{doing}}"</div></li>
+                {% empty %}
+                    <li>{% trans 'Doing Nothing?!' %}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        
+        <section id=done class="col-sm-3">
+            <ul>
+                {% for done in dones %}
+                    <li><div data-id={{ done.id }} class=" text_font">{{done}}"</div></li>
+                {% empty %}
+                    <li>{% trans 'Nothing to done?!' %}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        
+        <div id=bugs_backlogs class="col-sm-3">
+            <section id=bug class="row">
+                <ul>
+                   {% for bug in bugs %}
+                        <li><div data-id={{ bug.id }} class=" text_font">{{bug}}"</div></li>
+                    {% empty %}
+                        <li>{% trans 'No problems. :)' %}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+            <section id=backlog class="row">
+                <ul>
+                    {% for backlog in backlogs %}
+                        <li><div data-id={{ backlog.id }} class=" text_font">{{backlog}}"</div></li>
+                    {% empty %}
+                        <li>{% trans 'No backlogs' %}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'scrum/js/sprint.js' %}"></script>
+{% endblock %}
