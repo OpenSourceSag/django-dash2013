@@ -13,3 +13,7 @@ ul{
 .text_font{
     font-family: 'Covered By Your Grace', cursive;
 }
+
+.ui-state-hover{
+    border: 1px solid black;
+}

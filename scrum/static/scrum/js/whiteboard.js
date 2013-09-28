@@ -194,17 +194,16 @@ $(function() {
             $( this ).find( ".placeholder" ).remove();
             var text = ui.draggable.find('input').val();
             var id = ui.draggable.find('input').data('id');
-            $( "<li></li>" ).text( text ).data('id', id).appendTo( this );
-            $.ajax({
-                url: 'sprint/'+id+'/',
-            });
-        }
-    }).sortable({
-        items: "li:not(.placeholder)",
-        sort: function() {
-            // gets added unintentionally by droppable interacting with sortable
-            // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
-            $( this ).removeClass( "ui-state-default" );
+            if ($( this ).find("li[data-id='"+id+"']").length == 0){
+                $( "<li></li>" ).text( text ).data('id', id).appendTo( this );
+                $.ajax({
+                    method: 'POST',
+                    url: 'sprint/'+id+'/',
+                    data: {task_id: id}
+                });
+            }else{
+                //Display Message
+            }
         }
     });
 });
