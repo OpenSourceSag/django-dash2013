@@ -23,7 +23,7 @@ class Project(models.Model):
 
 
 class Story(models.Model):
-    title = models.CharField(unique=True, max_length=255)
+    title = models.CharField(max_length=255)
     note = models.TextField(blank=True)
     last_modified = models.DateTimeField(auto_now=True)
     project = models.ForeignKey(Project, related_name='Story_project')
