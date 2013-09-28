@@ -7,7 +7,7 @@
 {% block content %}
     <header class="row">
         <input id=project_title class="col-xs-12 whiteboard_field title_font" type="text" autofocus=autofocus value="{{ project.name }}"></input>
-        <textarea rows=2 class="col-xs-12 whiteboard_field text_font">{{ project.description}}</textarea>
+        <textarea id=project_description rows=2 class="col-xs-12 whiteboard_field text_font">{{ project.description}}</textarea>
     </header>
     <div class="row">
         
@@ -38,7 +38,7 @@
                     {% for sprint in project.sprints.all %}
                         <li data-id="{{ sprint.id }}">
                             <div>Sprint #{{ sprint.number }}<div>
-                            <ul>
+                            <ul class="sprint_tasks">
                                 {% for task in sprint.tasks.all %}
                                     <li data-id="{{ task.id }}">{{ task.title }}</li>
                                 {% empty %}

@@ -6,7 +6,9 @@
     <title>{% block title %}{% endblock %}Agile-board</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
+    <link href="{% static '_layout/css/agileboard.css' %}" rel="stylesheet" media="screen">
     <link href="{% static 'scrum/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'scrum/css/jquery-ui-1.10.3.custom.min.css' %}" rel="stylesheet" media="screen">
     {% block extra_css %}{% endblock %}
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -24,6 +26,8 @@
     <script src="//code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{% static 'scrum/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'scrum/js/jquery-ui-1.10.3.custom.min.js' %}"></script>
+    
     {% block extra_js %}{% endblock %}
   </body>
 </html>

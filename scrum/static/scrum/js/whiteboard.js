@@ -89,7 +89,7 @@ function sprintDelTask(taskId){
 function saveProject(){
     projectData = {
         title: $('#project_title').val(),
-        description: $('#project_description').val() 
+        description: $('#project_description').html() 
     };
     $.ajax({
         type: 'PUT',
