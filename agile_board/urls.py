@@ -1,12 +1,15 @@
 from django.conf.urls import patterns, include, url
-
-# Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+
+from scrum.views import WhiteBoardView
+
+
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'agile_board.views.home', name='home'),
+    url(r'^$', WhiteBoardView.as_view(), name='whiteboard'),
     # url(r'^agile_board/', include('agile_board.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
