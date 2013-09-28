@@ -2,7 +2,10 @@
 @import url(http://fonts.googleapis.com/css?family=Permanent+Marker);
 
 
-
+ul{
+    list-style: none;
+    padding:0;
+}
 .title_font{
     font-family: 'Permanent Marker', cursive;
 }

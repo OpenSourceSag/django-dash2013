@@ -181,5 +181,25 @@ $(function() {
     $('#tasks').on('change','input',onTaskFieldChange);
     $('#tasks').on('keydown','input',onTaskFieldKeydown);
     
+    $( "#tasks li" ).draggable({
+        appendTo: "body",
+        helper: "clone"
+    });
+    $( ".sprint_tasks" ).droppable({
+        activeClass: "ui-state-default",
+        hoverClass: "ui-state-hover",
+        accept: ":not(.ui-sortable-helper)",
+        drop: function( event, ui ) {
+            $( this ).find( ".placeholder" ).remove();
+            $( "<li></li>" ).text( ui.draggable.find('input').val() ).appendTo( this );
+        }
+    }).sortable({
+        items: "li:not(.placeholder)",
+        sort: function() {
+            // gets added unintentionally by droppable interacting with sortable
+            // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
+            $( this ).removeClass( "ui-state-default" );
+        }
+    });
 });
 
