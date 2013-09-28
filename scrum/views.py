@@ -2,14 +2,36 @@ from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
 from .models import Project, Story, Task, Sprint, SprintTasks, TASKS_STATUS
 from django.http import HttpResponseNotFound, HttpResponse, Http404
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+
 import string
 import json
 
-
-class SprintView(TemplateView):
+#@login_required
+class SprintView(DetailView):
     template_name = 'scrum/sprint.html'
+    model = Sprint
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(SprintView, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        sprint = kwargs.get('object')
 
+        sprint_tasks = sprint.tasks.all()
 
+        context['sprint'] = sprint
+        context['todos'] = sprint_tasks.filter(status='TO')
+        context['doings'] = sprint_tasks.filter(status='IN')
+        context['dones'] = sprint_tasks.filter(status='DO')
+        context['bugs'] = sprint_tasks.filter(status='PR')
+        context['backlogs'] = sprint_tasks.filter(status='BA')
+
+        return context
+
+#@login_required
 class WhiteBoardView(DetailView):
     template_name = 'scrum/whiteboard.html'
     model = Project
@@ -29,7 +51,7 @@ class WhiteBoardView(DetailView):
 
         return context
 
-
+#@login_required
 def add_story(request):
     if request.method == 'POST':
         url = request.META.get('PATH_INFO')
@@ -52,7 +74,7 @@ def add_story(request):
     else:
         raise Http404
 
-
+#@login_required
 def add_task(request):
     if request.method == 'POST':
         task_title = request.POST.get('title')
@@ -75,7 +97,7 @@ def add_task(request):
     else:
         raise Http404
 
-
+#@login_required
 def add_project(request):
     if request.method == 'POST':
         project_name = request.POST.get('name')
@@ -90,3 +112,21 @@ def add_project(request):
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         raise Http404
+    
+def login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            # Redirect to a success page.
+        #else:
+            # Return a 'disabled account' error message
+    #else:
+        # Return an 'invalid login' error message.
+
+@login_required
+def logout(request):
+    logout(request)
+    # Redirect to a success page
