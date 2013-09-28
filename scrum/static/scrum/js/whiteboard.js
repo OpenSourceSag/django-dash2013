@@ -182,24 +182,28 @@ $(function() {
     $('#tasks').on('change','input',onTaskFieldChange);
     $('#tasks').on('keydown','input',onTaskFieldKeydown);
     
-    $( "#tasks li" ).draggable({
+    $("#tasks li").draggable({
         appendTo: "body",
         helper: "clone"
     });
-    $( ".sprint_tasks" ).droppable({
+    $(".sprint_tasks").droppable({
         activeClass: "ui-state-default",
         hoverClass: "ui-state-hover",
         accept: ":not(.ui-sortable-helper)",
         drop: function( event, ui ) {
-            $( this ).find( ".placeholder" ).remove();
+            $(this).find(".placeholder").remove();
             var text = ui.draggable.find('input').val();
             var id = ui.draggable.find('input').data('id');
+            var sprintId = $(this).data('id')
             if (id != undefined && $( this ).find("li[data-id='"+id+"']").length == 0){
                 $( "<li></li>" ).text( text ).data('id', id).appendTo( this );
                 $.ajax({
                     method: 'POST',
-                    url: 'sprint/'+id+'/',
-                    data: {task_id: id}
+                    url: 'sprint-task/add/',
+                    data: {
+                        task: id,
+                        sprint: sprintId
+                    }
                 });
             }else{
                 //Display Message
