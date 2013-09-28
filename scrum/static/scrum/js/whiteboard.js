@@ -35,7 +35,7 @@ function saveStory(storyField){
     storyId = $(storyField).data('id');
     storyData = {
         title: $(storyField).val(),
-        time: 0
+        estimated_time: 0,
     };
     if (storyId){
         $.ajax({
@@ -56,7 +56,7 @@ function saveTask(taskField){
     taskId = $(taskField).data('id');
     taskData = {
         title: $(taskField).val(),
-        time: 0,
+        estimated_time: 0,
         story_id: 1
     };
     if (taskId){
@@ -192,7 +192,12 @@ $(function() {
         accept: ":not(.ui-sortable-helper)",
         drop: function( event, ui ) {
             $( this ).find( ".placeholder" ).remove();
-            $( "<li></li>" ).text( ui.draggable.find('input').val() ).appendTo( this );
+            var text = ui.draggable.find('input').val();
+            var id = ui.draggable.find('input').data('id');
+            $( "<li></li>" ).text( text ).data('id', id).appendTo( this );
+            $.ajax({
+                url: 'sprint/'+id+'/',
+            });
         }
     }).sortable({
         items: "li:not(.placeholder)",
