@@ -39,7 +39,7 @@ function saveStory(storyField){
     };
     if (storyId){
         $.ajax({
-            type: 'PUT',
+            type: 'POST',
             url: 'story/'+storyId+'/',
             data: storyData
         }); 
@@ -61,7 +61,7 @@ function saveTask(taskField){
     };
     if (taskId){
         $.ajax({
-            type: 'PUT',
+            type: 'POST',
             url: 'task/'+taskId+'/',
             data: taskData
         }); 
@@ -92,7 +92,8 @@ function saveProject(){
         description: $('#project_description').html() 
     };
     $.ajax({
-        type: 'PUT',
+        url: '/update/',
+        type: 'POST',
         data: projectData
     }); 
 }
