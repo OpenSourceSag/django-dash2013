@@ -1,10 +1,12 @@
 {% extends '_layout/base.html' %}
 {% load static %}
-{% block extra_css %}{% endblock %}
+{% block extra_css %}
+    <link href="{% static 'scrum/css/whiteboard.css' %}" rel="stylesheet" media="screen">
+{% endblock %}
 {% block content %}
     <header class="row">
-        <input id=project_title class="col-xs-12 whiteboard_field" type="text" autofocus=autofocus value="{{object.name}}"></input>
-        <textarea rows=2 class="col-xs-12 whiteboard_field">{{object.description}}</textarea>
+        <input id=project_title class="col-xs-12 whiteboard_field title_font" type="text" autofocus=autofocus value="{{ project.name }}"></input>
+        <textarea rows=2 class="col-xs-12 whiteboard_field text_font">{{ project.description}}</textarea>
     </header>
     <div class="row">
         
@@ -12,10 +14,11 @@
             <ul>
                 {% if stories %}
                     {% for story in stories %}
-                        <li><input class="whiteboard_field" value="{{story}}"></input></li>
+
+                        <li><input data-id={{ story.id }} class="whiteboard_field text_font" value="{{story}}"></input></li>
                     {% endfor %}
                 {% endif %}
-                <li><input class="whiteboard_field"></input></li>
+                <li><input class="whiteboard_field text_font"></input></li>
             </ul>
         </section>
             
@@ -23,10 +26,10 @@
             <ul>
                 {% if tasks %}
                     {% for task in tasks %}
-                        <li><input class="whiteboard_field" value="{{task}}"></input></li>
+                        <li><input data-id={{ task.id }} class="whiteboard_field text_font" value="{{task}}"></input></li>
                     {% endfor %}
                 {% endif %}
-                <li><input class="whiteboard_field"></input></li>
+                <li><input class="whiteboard_field text_font"></input></li>
             </ul>
         </section>
         
@@ -45,7 +48,6 @@
         
     </div>
 {% endblock %}
-5555555555555555555555555555
 {% block extra_js %}
     <script src="{% static 'scrum/js/whiteboard.js' %}"></script>
 {% endblock %}

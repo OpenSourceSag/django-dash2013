@@ -99,14 +99,14 @@ function saveProject(){
 function addNewStoryField(){
     // debugger;
     storyUl = $('#stories ul')
-    newField = $('<li><input class="whiteboard_field"></input></li>');
+    newField = $('<li><input class="whiteboard_field text_font"></input></li>');
     newField.appendTo(storyUl);
     return newField;
 }
 
 function addNewTaskField(){
     taskUl = $('#tasks ul')
-    newField = $('<li><input class="whiteboard_field"></input></li>');
+    newField = $('<li><input class="whiteboard_field text_font"></input></li>');
     newField.appendTo(taskUl);
     return newField;
 }
