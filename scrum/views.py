@@ -5,7 +5,7 @@ from django.http import HttpResponseNotFound, HttpResponse, Http404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from .forms import ProjectForm, StoryForm, TaskForm, SprintForm
+from .forms import ProjectForm, StoryForm, TaskForm, SprintForm, SprintTasksForm
 
 import string
 import json
@@ -39,40 +39,17 @@ class WhiteBoardView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(WhiteBoardView, self).get_context_data(**kwargs)
 
-        print self.request.method
-        print self.request.method
-        print self.request.method
         project = kwargs.get('object')
         project_stories = Story.objects.filter(project=project)
-        project_tasks = Task.objects.filter(story__in=project_stories)
-        project_tasks_backlog = project_tasks.filter(status='BACKLOGS')
+        project_tasks = Task.objects.all().exclude(pk__in=SprintTasks.objects.all().values_list('task'))
+        project_tasks_backlog = project_tasks.filter(status='BA')
 
         context['stories'] = project_stories
         context['tasks'] = project_tasks
-        context['tasks_backlog'] = project_tasks_backlog
+        context['backlogs'] = project_tasks_backlog
 
         return context
 
-#@login_required
-class WhiteBoardView(DetailView):
-    template_name = 'scrum/whiteboard.html'
-    model = Project
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(WhiteBoardView, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
-        project = kwargs.get('object')
-        project_stories = Story.objects.filter(project=project)
-        project_tasks = Task.objects.filter(story__in=project_stories)
-        project_tasks_backlog = project_tasks.filter(status='BACKLOGS')
-
-        context['stories'] = project_stories
-        context['tasks'] = project_tasks
-        context['tasks_backlog'] = project_tasks_backlog
-
-        return context
-    
     
 #@login_required
 def add_story(request, pk_project):
@@ -94,7 +71,7 @@ def add_story(request, pk_project):
         raise Http404
 
 #@login_required
-def update_story(request, pk_project, pk_story):
+def update_story(request, pk_story):
     if request.method == 'POST':
         response_data = {}
         
@@ -136,7 +113,7 @@ def add_task(request, pk_project):
         raise Http404
     
 #@login_required
-def update_task(request, pk_project, pk_task):
+def update_task(request, pk_task):
     if request.method == 'POST':
         response_data = {}
         
@@ -189,6 +166,23 @@ def update_project(request, pk_project):
                 print f.errors
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        raise Http404
+    
+def add_sprint_task(request):
+    if request.method == 'POST':
+        post_data = {}
+        post_data['task_end_status'] = 'DO'
+        post_data['sprint'] = request.POST['sprint']
+        post_data['task'] = request.POST['task']
+        
+        f = SprintTasksForm(post_data)
+        if f.is_valid():
+            f.save()
+        else:
+            print f.errors
+
+        return HttpResponse()
     else:
         raise Http404
     

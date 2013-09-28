@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Project, Story, Task, Sprint
+from .models import Project, Story, Task, Sprint, SprintTasks
 
 class ProjectForm(ModelForm):
      class Meta:
@@ -16,6 +16,10 @@ class TaskForm(ModelForm):
 class SprintForm(ModelForm):
      class Meta:
          model = Sprint
+         
+class SprintTasksForm(ModelForm):
+     class Meta:
+         model = SprintTasks
          
          
          
