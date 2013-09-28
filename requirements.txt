@@ -2,3 +2,4 @@ Django==1.5.4
 South==0.8.2
 distribute==0.6.24
 dj-database-url==0.2.2
+psycopg2==2.5.1

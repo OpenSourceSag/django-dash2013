@@ -2,12 +2,12 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 
-TASKS_STATUS = ((TODO, 'To do'),
-                (INPROGRESS, 'In progress'),
-                (REMOVED, 'Removed'),
-                (PROBLEM, 'Problem'),
-                (DONE, 'Done'),
-                (BACKLOGS, 'Backlogs'),)
+TASKS_STATUS = (('TODO', 'To do'),
+                ('INPROGRESS', 'In progress'),
+                ('REMOVED', 'Removed'),
+                ('PROBLEM', 'Problem'),
+                ('DONE', 'Done'),
+                ('BACKLOGS', 'Backlogs'),)
 
 
 class Project(models.Model):
@@ -38,7 +38,7 @@ class Section(models.Model):
 class Task(models.Model):
     title = models.CharField(max_length=255)
     note = models.TextField(blank=True)
-    status = models.CharField(choices=TASKS_STATUS)
+    status = models.CharField(max_length=10, choices=TASKS_STATUS)
     last_modified = models.DateTimeField(auto_now=True)
     assigned_to = models.ManyToManyField(User, related_name='Task_users', blank=True, null=True)
     section = models.ForeignKey(Section, related_name='Task_section')
@@ -51,9 +51,6 @@ class Task(models.Model):
         return "%s" % (self.title,)
 
 
-class SprintTasks(models.Model):
-    task_end_status = models.CharField(choices=TASKS_STATUS)
-
 
 class Sprint(models.Model):
     number = models.IntegerField()
@@ -62,8 +59,15 @@ class Sprint(models.Model):
     tasks = models.ManyToManyField(Task, through='SprintTasks', blank=True, null=True)
 
     class Meta:
-        ordering = ('title',)
+        ordering = ('number',)
         unique_together = ('number', 'project')
 
     def __unicode__(self):
-        return "%s" % (self.sprint_title, )
+        return "sprint %s" % (self.number, )
+
+
+class SprintTasks(models.Model):
+    sprint = models.ForeignKey(Sprint, related_name='sprints')
+    task = models.ForeignKey(Task, related_name='tasks')
+    task_end_status = models.CharField(max_length=10, choices=TASKS_STATUS)
+

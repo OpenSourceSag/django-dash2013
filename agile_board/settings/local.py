@@ -3,13 +3,13 @@ from .base import *
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-DATABASE = {
-    'default':{
-        'ENGINE': 'django.db.backends.postgresl_psycopg2',
-        'NAME': 'agilebord',
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'agileboard',
         'USER': '',
         'PASSWORD': '',
-        'HOST': 'localhost',
+        'HOST': '',
         'PORT': '',
     }
 }
