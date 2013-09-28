@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     url(r'^sprint/$', SprintView.as_view(), name='sprint'),
     url(r'^project/(?P<pk>[0-9]+)/$', WhiteBoardView.as_view(), name='whiteboard'),
     url(r'^project/[0-9]+/story/add/$', add_story, name='whiteboard'),
-    url(r'^[0-9]+/task/add/$', add_task, name='whiteboard'),
+    url(r'^project/[0-9]+/task/add/$', add_task, name='whiteboard'),
 
     # url(r'^agile_board/', include('agile_board.foo.urls')),
 
