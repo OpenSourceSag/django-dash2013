@@ -12,23 +12,18 @@
         
         <section id=stories class="col-sm-4">
             <ul>
-                {% if stories %}
-                    {% for story in stories %}
-
-                        <li><input data-id={{ story.id }} class="whiteboard_field text_font" value="{{story}}"></input></li>
-                    {% endfor %}
-                {% endif %}
+                {% for story in stories %}
+                    <li><input data-id={{ story.id }} class="whiteboard_field text_font" value="{{story}}"></input></li>
+                {% endfor %}
                 <li><input class="whiteboard_field text_font"></input></li>
             </ul>
         </section>
             
         <section id=tasks class="col-sm-4">
             <ul>
-                {% if tasks %}
-                    {% for task in tasks %}
-                        <li><input data-id={{ task.id }} class="whiteboard_field text_font" value="{{task}}"></input></li>
-                    {% endfor %}
-                {% endif %}
+                {% for task in tasks %}
+                    <li><input data-id={{ task.id }} class="whiteboard_field text_font" value="{{task}}"></input></li>
+                {% endfor %}
                 <li><input class="whiteboard_field text_font"></input></li>
             </ul>
         </section>
@@ -41,23 +36,16 @@
             </div>
             <div id=backlogs class="row">
                 <ul>
-                    {% if tasks_backlog %}
-                        {% for task_backlog in tasks_backlog %}
-                            <li><input class="whiteboard_field" value="{{task_backlog}}"></input></li>
-                        {% endfor %}
-                    {% endif %}
-                    
-                    <li></li>
+                    {% for task_backlog in tasks_backlog %}
+                        <li><input class="whiteboard_field" value="{{task_backlog}}"></input></li>
+                    {% endfor %}
                 </ul>
             </div>
         </section>
         
     </div>
 {% endblock %}
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 {% block extra_js %}
     <script src="{% static 'scrum/js/whiteboard.js' %}"></script>
 {% endblock %}
