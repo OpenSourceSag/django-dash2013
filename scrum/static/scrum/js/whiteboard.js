@@ -1,11 +1,76 @@
+//Configure ajax and CSRF
+
+// See https://docs.djangoproject.com/en/1.5/ref/contrib/csrf/#ajax
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    crossDomain: false,
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type)) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
 //UX Functions
 
-function saveStory(projectId, storyField){
-    debugger;
+function saveStory(storyField){
+    storyId = $(storyField).data('id');
+    storyData = {
+        title: $(storyField).val(),
+        time: 0
+    };
+    if (storyId){
+        $.ajax({
+            type: 'PUT',
+            url: 'story/'+storyId+'/',
+            data: storyData
+        }); 
+    }else{
+        $.ajax({
+            type: 'POST',
+            url: 'story/add/',
+            data: storyData
+        }); 
+    }
 }
 
-function saveTask(projectId, taskField){
-    debugger;
+function saveTask(taskField){
+    taskId = $(taskField).data('id');
+    taskData = {
+        title: $(taskField).val(),
+        time: 0
+    };
+    if (taskId){
+        $.ajax({
+            type: 'PUT',
+            url: 'task/'+taskId+'/',
+            data: taskData
+        }); 
+    }else{
+        $.ajax({
+            type: 'POST',
+            url: 'task/add/',
+            data: taskData
+        }); 
+    }
 }
 
 function addSprint(projectId){
@@ -16,12 +81,19 @@ function sprintAddTask(sprintArea){
 
 }
 
-function sprintDelTask(sprintId, taskId){
+function sprintDelTask(taskId){
 
 }
 
-function saveProject(projectId){
-
+function saveProject(){
+    projectData = {
+        title: $('#project_title').val(),
+        description: $('#project_description').val() 
+    };
+    $.ajax({
+        type: 'PUT',
+        data: projectData
+    }); 
 }
 
 function addNewStoryField(){
@@ -60,19 +132,20 @@ function syncProject(){
 }
 
 //Events functions
-
 function onHeaderFieldKeydown(e){
-    if(e.which == 13){
+    if(e.which == 13 && e.target.value != '' && e.shiftKey == false){
         event.preventDefault();
+        storyField = addNewStoryField();
+        storyField.find('input').focus();
     }
 }
 
 function onHeaderFieldChange(e){
-    debugger;
+    saveProject();
 }
 
 function onStoryFieldKeydown(e){
-    if(e.which == 13){
+    if(e.which == 13 && e.target.value != ''){
         event.preventDefault();
         storyField = addNewStoryField();
         storyField.find('input').focus();
@@ -80,11 +153,11 @@ function onStoryFieldKeydown(e){
 }
 
 function onStoryFieldChange(e){
-    debugger;
+    saveStory(e.target);
 }
 
 function onTaskFieldKeydown(e){
-    if(e.which == 13){
+    if(e.which == 13 && e.target.value != ''){
         event.preventDefault();
         taskField = addNewTaskField();
         taskField.find('input').focus();
@@ -92,14 +165,14 @@ function onTaskFieldKeydown(e){
 }
 
 function onTaskFieldChange(e){
-    debugger;
+    saveTask(e.target);
 }
 
 //TODO: Add the sprint drag&drop events
 
 $(function() {
     $('header .whiteboard_field').change(onHeaderFieldChange);
-    $('#project_title').keydown(onHeaderFieldKeydown);
+    $('header .whiteboard_field').keydown(onHeaderFieldKeydown);
 
     $('#stories').on('change','input',onStoryFieldChange);
     $('#stories').on('keydown','input',onStoryFieldKeydown);
@@ -108,5 +181,4 @@ $(function() {
     $('#tasks').on('keydown','input',onTaskFieldKeydown);
     
 });
-
 
