@@ -56,7 +56,8 @@ function saveTask(taskField){
     taskId = $(taskField).data('id');
     taskData = {
         title: $(taskField).val(),
-        time: 0
+        time: 0,
+        story_id: 1
     };
     if (taskId){
         $.ajax({

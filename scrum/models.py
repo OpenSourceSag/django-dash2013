@@ -57,7 +57,7 @@ class Task(models.Model):
 class Sprint(models.Model):
     number = models.IntegerField()
     is_closed = models.BooleanField()
-    project = models.ForeignKey(Project, related_name='Sprint_project')
+    project = models.ForeignKey(Project, related_name='sprints')
     last_modified = models.DateTimeField(auto_now=True)
     tasks = models.ManyToManyField(Task, through='SprintTasks', blank=True, null=True)
 

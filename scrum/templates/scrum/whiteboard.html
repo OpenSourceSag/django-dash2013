@@ -1,4 +1,5 @@
 {% extends '_layout/base.html' %}
+{% load i18n %}
 {% load static %}
 {% block extra_css %}
     <link href="{% static 'scrum/css/whiteboard.css' %}" rel="stylesheet" media="screen">
@@ -11,6 +12,7 @@
     <div class="row">
         
         <section id=stories class="col-sm-4">
+            <h3>{% trans 'Stories' %}</h3>
             <ul>
                 {% for story in stories %}
                     <li><input data-id={{ story.id }} class="whiteboard_field text_font" value="{{story}}"></input></li>
@@ -20,6 +22,7 @@
         </section>
             
         <section id=tasks class="col-sm-4">
+            <h3>{% trans 'Tasks' %}</h3>
             <ul>
                 {% for task in tasks %}
                     <li><input data-id={{ task.id }} class="whiteboard_field text_font" value="{{task}}"></input></li>
@@ -30,14 +33,31 @@
         
         <section id=sprints_backlogs class="col-sm-4">
             <div id=sprints class="row">
+                <h3>{% trans 'Sprints' %}</h3>
                 <ul>
-                    <li></li>
+                    {% for sprint in project.sprints.all %}
+                        <li data-id="{{ sprint.id }}">
+                            <div>Sprint #{{ sprint.number }}<div>
+                            <ul>
+                                {% for task in sprint.tasks.all %}
+                                    <li data-id="{{ task.id }}">{{ Task.title }}</li>
+                                {% empty %}
+                                    <li>{% trans 'The sprint is empty. Put some gaz!' %}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% empty %}
+                        <li>{% trans 'No sprints here!' %}
+                    {% endfor %}
                 </ul>
             </div>
             <div id=backlogs class="row">
+                <h3>{% trans 'backlog' %}</h3>
                 <ul>
-                    {% for task_backlog in tasks_backlog %}
-                        <li><input class="whiteboard_field" value="{{task_backlog}}"></input></li>
+                    {% for task in backlogs %}
+                        <li data-id="{{ task.id }}">{{ Task.title }}</li>
+                    {% empty %}
+                        <li>{% trans 'Oh yeah! No backlogs!' %}</li>
                     {% endfor %}
                 </ul>
             </div>
