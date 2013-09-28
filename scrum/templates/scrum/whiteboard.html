@@ -3,20 +3,37 @@
 {% block extra_css %}{% endblock %}
 {% block content %}
     <header class="row">
-        <input id=project_title class="col-xs-12 whiteboard_field" type="text" autofocus=autofocus></input>
-        <textarea id=project_description rows=2 class="col-xs-12 whiteboard_field"></textarea>
+        <input id=project_title class="col-xs-12 whiteboard_field" type="text" autofocus=autofocus value={{object.name}}></input>
+        <textarea rows=2 class="col-xs-12 whiteboard_field" value={{object.description}}></textarea>
+                <p>{{object.name}}</p>
+
+        <p>{{object.description}}</p>
+
     </header>
     <div class="row">
+        
         <section id=stories class="col-sm-4">
             <ul>
+                {% if stories %}
+                    {% for story in stories %}
+                        <li><input class="whiteboard_field" value={{story}}></input></li>
+                    {% endfor %}
+                {% endif %}
                 <li><input class="whiteboard_field"></input></li>
             </ul>
         </section>
+            
         <section id=tasks class="col-sm-4">
             <ul>
+                {% if tasks %}
+                    {% for task in tasks %}
+                        <li><input class="whiteboard_field" value={{task}}></input></li>
+                    {% endfor %}
+                {% endif %}
                 <li><input class="whiteboard_field"></input></li>
             </ul>
         </section>
+        
         <section id=sprints_backlogs class="col-sm-4">
             <div id=sprints class="row">
                 <ul>
@@ -29,6 +46,7 @@
                 </ul>
             </div>
         </section>
+        
     </div>
 {% endblock %}
 
