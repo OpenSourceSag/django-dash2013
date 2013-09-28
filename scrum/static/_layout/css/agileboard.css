@@ -17,3 +17,10 @@ ul{
 .ui-state-hover{
     border: 1px solid black;
 }
+
+.alert{
+    position: fixed;
+    top: 25px;
+    left: 10px;
+    right: 10px;
+}

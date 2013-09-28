@@ -42,12 +42,18 @@ function saveStory(storyField){
             type: 'POST',
             url: 'story/'+storyId+'/',
             data: storyData
+        }).fail(function(){
+            $(taskField).parent().remove();
         }); 
     }else{
         $.ajax({
             type: 'POST',
             url: 'story/add/',
             data: storyData
+        }).done(function(data){
+            $(storyField).data('id', data.story_pk);
+        }).fail(function(){
+            $(storyField).parent().remove();
         }); 
     }
 }
@@ -64,12 +70,18 @@ function saveTask(taskField){
             type: 'POST',
             url: 'task/'+taskId+'/',
             data: taskData
-        }).success(function(){$(taskField).destroy();}); 
+        }).fail(function(){
+            $(taskField).parent().remove();
+        }); 
     }else{
         $.ajax({
             type: 'POST',
             url: 'task/add/',
             data: taskData
+        }).done(function(data){
+            $(taskField).data('id', data.task_pk);
+        }).fail(function(){
+            $(taskField).parent().remove();
         }); 
     }
 }
@@ -95,6 +107,8 @@ function saveProject(){
         url: 'update/',
         type: 'POST',
         data: projectData
+    }).done(function(){
+        $('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>...</div>').appendTo($('body')).alert();
     }); 
 }
 
