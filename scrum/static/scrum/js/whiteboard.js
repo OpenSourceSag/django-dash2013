@@ -35,7 +35,7 @@ function saveStory(storyField){
     storyId = $(storyField).data('id');
     storyData = {
         title: $(storyField).val(),
-        time: 0
+        estimated_time: 0
     };
     if (storyId){
         $.ajax({
@@ -56,8 +56,8 @@ function saveTask(taskField){
     taskId = $(taskField).data('id');
     taskData = {
         title: $(taskField).val(),
-        time: 0,
-        story_id: 1
+        estimated_time: 0,
+        story: 1
     };
     if (taskId){
         $.ajax({
