@@ -5,6 +5,7 @@ from django.http import HttpResponseNotFound, HttpResponse, Http404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from .forms import ProjectForm, StoryForm, TaskForm, SprintForm
 
 import string
 import json
@@ -15,9 +16,7 @@ class SprintView(DetailView):
     model = Sprint
     
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         context = super(SprintView, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
         sprint = kwargs.get('object')
 
         sprint_tasks = sprint.tasks.all()
@@ -28,6 +27,29 @@ class SprintView(DetailView):
         context['dones'] = sprint_tasks.filter(status='DO')
         context['bugs'] = sprint_tasks.filter(status='PR')
         context['backlogs'] = sprint_tasks.filter(status='BA')
+
+        return context
+
+#@login_required
+class WhiteBoardView(DetailView):
+    template_name = 'scrum/whiteboard.html'
+    model = Project
+    
+
+    def get_context_data(self, **kwargs):
+        context = super(WhiteBoardView, self).get_context_data(**kwargs)
+
+        print self.request.method
+        print self.request.method
+        print self.request.method
+        project = kwargs.get('object')
+        project_stories = Story.objects.filter(project=project)
+        project_tasks = Task.objects.filter(story__in=project_stories)
+        project_tasks_backlog = project_tasks.filter(status='BACKLOGS')
+
+        context['stories'] = project_stories
+        context['tasks'] = project_tasks
+        context['tasks_backlog'] = project_tasks_backlog
 
         return context
 
@@ -50,48 +72,86 @@ class WhiteBoardView(DetailView):
         context['tasks_backlog'] = project_tasks_backlog
 
         return context
-
+    
+    
 #@login_required
-def add_story(request):
+def add_story(request, pk_project):
     if request.method == 'POST':
-        url = request.META.get('PATH_INFO')
-        project_id = url[url.find('/project/')+9:url.find('/story')]
-
-        story_title = request.POST.get('title')
-        story_time = request.POST.get('time')
-        story_project = Project.objects.get(pk=project_id)
-
         response_data = {}
 
-        if story_title and story_time and story_project:
-            new_story = Story.objects.create(title=story_title,
-                                             project=story_project,
-                                             estimated_time=story_time)
+        post_values = request.POST.copy()
+        post_values['project'] = pk_project
 
+        f = StoryForm(post_values)
+        if f.is_valid():
+            new_story = f.save()
             response_data['story_pk'] = new_story.pk
+        else:
+            print f.errors
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         raise Http404
 
 #@login_required
-def add_task(request):
+def update_story(request, pk_project, pk_story):
     if request.method == 'POST':
-        task_title = request.POST.get('title')
-        task_time = request.POST.get('time')
-        story_id = request.POST.get('story_id')
-
         response_data = {}
+        
+        if pk_story:
+            story = Story.objects.get(pk=pk_story)
+            
+            post_values = request.POST.copy()
+            post_values['project'] = story.project.pk
+            
+            f = StoryForm(post_values, instance=story)
+            if f.is_valid():
+                story = f.save()
+                response_data['story_pk'] = story.pk
+            else:
+                print f.errors
 
-        if task_title and task_time and story_id:
-            task_story = Story.objects.get(pk=story_id)
-
-            new_task = Task.objects.create(title=task_title,
-                                           story=task_story,
-                                           estimated_time=task_time,
-                                           status='TO')
-
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        raise Http404
+    
+#@login_required
+def add_task(request, pk_project):
+    if request.method == 'POST':
+        response_data = {}
+        
+        post_values = request.POST.copy()
+        post_values['project'] = pk_project
+        post_values['status'] = 'TO'
+        
+        f = TaskForm(post_values)
+        if f.is_valid():
+            new_task = f.save()
             response_data['task_pk'] = new_task.pk
+        else:
+            print f.errors
+
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        raise Http404
+    
+#@login_required
+def update_task(request, pk_project, pk_task):
+    if request.method == 'POST':
+        response_data = {}
+        
+        if pk_task:
+            task = Task.objects.get(pk=pk_task)
+            
+            post_values = request.POST.copy()
+            post_values['status'] = task.status
+            
+            f = TaskForm(post_values, instance=task)
+            if f.is_valid():
+                task = f.save()
+                response_data['task_pk'] = task.pk
+            else:
+                print f.errors
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
@@ -100,14 +160,33 @@ def add_task(request):
 #@login_required
 def add_project(request):
     if request.method == 'POST':
-        project_name = request.POST.get('name')
-
         response_data = {}
+        
+        f = ProjectForm(request.POST)
+        if f.is_valid():
+            new_project = f.save()
+            response_data['project_pk'] = new_project.pk
+        else:
+            print f.errors
 
-        if project_name:
-            new_project = Project.objects.create(name=project_name,)
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        raise Http404
 
-            response_data['new_project'] = new_project.pk
+#@login_required
+def update_project(request, pk_project):
+    if request.method == 'POST':
+        response_data = {}
+        
+        if pk_project:
+            project = Project.objects.get(pk=pk_project)
+            
+            f = ProjectForm(request.POST, instance=project)
+            if f.is_valid():
+                project = f.save()
+                response_data['project_pk'] = project.pk
+            else:
+                print f.errors
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
