@@ -41,6 +41,12 @@
             </div>
             <div id=backlogs class="row">
                 <ul>
+                    {% if tasks_backlog %}
+                        {% for task_backlog in tasks_backlog %}
+                            <li><input class="whiteboard_field" value="{{task_backlog}}"></input></li>
+                        {% endfor %}
+                    {% endif %}
+                    
                     <li></li>
                 </ul>
             </div>
@@ -48,6 +54,10 @@
         
     </div>
 {% endblock %}
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 {% block extra_js %}
     <script src="{% static 'scrum/js/whiteboard.js' %}"></script>
 {% endblock %}
