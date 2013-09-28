@@ -25,7 +25,7 @@
             <h3>{% trans 'Tasks' %}</h3>
             <ul>
                 {% for task in tasks %}
-                    <li><input data-id={{ task.id }} class="whiteboard_field text_font" value="{{task}}"></input></li>
+                    <li data-story="{{ task.story_id }}"><input data-id={{ task.id }} class="whiteboard_field text_font" value="{{task}}"></input></li>
                 {% endfor %}
                 <li><input class="whiteboard_field text_font"></input></li>
             </ul>
@@ -40,7 +40,7 @@
                             <div>Sprint #{{ sprint.number }}<div>
                             <ul>
                                 {% for task in sprint.tasks.all %}
-                                    <li data-id="{{ task.id }}">{{ Task.title }}</li>
+                                    <li data-id="{{ task.id }}">{{ task.title }}</li>
                                 {% empty %}
                                     <li>{% trans 'The sprint is empty. Put some gaz!' %}</li>
                                 {% endfor %}
@@ -55,7 +55,7 @@
                 <h3>{% trans 'backlog' %}</h3>
                 <ul>
                     {% for task in backlogs %}
-                        <li data-id="{{ task.id }}">{{ Task.title }}</li>
+                        <li data-id="{{ task.id }}">{{ task.title }}</li>
                     {% empty %}
                         <li>{% trans 'Oh yeah! No backlogs!' %}</li>
                     {% endfor %}
