@@ -3,12 +3,11 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-TASKS_STATUS = (('TODO', 'To do'),
-                ('INPROGRESS', 'In progress'),
-                ('REMOVED', 'Removed'),
-                ('PROBLEM', 'Problem'),
-                ('DONE', 'Done'),
-                ('BACKLOGS', 'Backlogs'),)
+TASKS_STATUS = (('TO', 'To do'),
+                ('IN', 'In progress'),
+                ('PR', 'Problem'),
+                ('DO', 'Done'),
+                ('BA', 'Backlogs'),)
 
 
 class Project(models.Model):
@@ -40,7 +39,7 @@ class Story(models.Model):
 class Task(models.Model):
     title = models.CharField(max_length=255)
     note = models.TextField(blank=True)
-    status = models.CharField(max_length=10, choices=TASKS_STATUS)
+    status = models.CharField(max_length=2, choices=TASKS_STATUS)
     last_modified = models.DateTimeField(auto_now=True)
     assigned_to = models.ManyToManyField(User, related_name='Task_users', blank=True, null=True)
     story = models.ForeignKey(Story, related_name='Task_story')
@@ -73,5 +72,5 @@ class Sprint(models.Model):
 class SprintTasks(models.Model):
     sprint = models.ForeignKey(Sprint, related_name='sprints')
     task = models.ForeignKey(Task, related_name='tasks')
-    task_end_status = models.CharField(max_length=10, choices=TASKS_STATUS)
+    task_end_status = models.CharField(max_length=2, choices=TASKS_STATUS)
 
