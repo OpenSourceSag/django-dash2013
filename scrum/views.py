@@ -74,3 +74,19 @@ def add_task(request):
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         raise Http404
+
+
+def add_project(request):
+    if request.method == 'POST':
+        project_name = request.POST.get('name')
+
+        response_data = {}
+
+        if project_name:
+            new_project = Project.objects.create(name=project_name,)
+
+            response_data['new_project'] = new_project.pk
+
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        raise Http404
