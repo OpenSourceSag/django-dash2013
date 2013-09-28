@@ -92,7 +92,7 @@ function saveProject(){
         description: $('#project_description').html() 
     };
     $.ajax({
-        url: '/update/',
+        url: 'update/',
         type: 'POST',
         data: projectData
     }); 

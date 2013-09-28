@@ -43,7 +43,7 @@
                             <div>Sprint #{{ sprint.number }}<div>
                             <ul class="sprint_tasks">
                                 {% for task in sprint.tasks.all %}
-                                    <li data-id="{{ task.id }}">{{ task.title }}</li>
+                                    <li data-id="{{ task.id }}"><span class="glyphicon glyphicon-remove"></span>{{ task.title }}</li>
                                 {% empty %}
                                     <li>{% trans 'The sprint is empty. Put some gaz!' %}</li>
                                 {% endfor %}
