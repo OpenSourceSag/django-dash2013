@@ -35,7 +35,7 @@ function saveStory(storyField){
     storyId = $(storyField).data('id');
     storyData = {
         title: $(storyField).val(),
-        estimated_time: 0,
+        estimated_time: 0
     };
     if (storyId){
         $.ajax({
@@ -57,14 +57,14 @@ function saveTask(taskField){
     taskData = {
         title: $(taskField).val(),
         estimated_time: 0,
-        story_id: 1
-    };
+        story: 1
+    };    
     if (taskId){
         $.ajax({
             type: 'POST',
             url: 'task/'+taskId+'/',
             data: taskData
-        }); 
+        }).success(function(){$(taskField).destroy();}); 
     }else{
         $.ajax({
             type: 'POST',
@@ -89,7 +89,7 @@ function sprintDelTask(taskId){
 function saveProject(){
     projectData = {
         title: $('#project_title').val(),
-        description: $('#project_description').html() 
+        description: $('#project_description').val() 
     };
     $.ajax({
         url: 'update/',
@@ -108,7 +108,7 @@ function addNewStoryField(){
 
 function addNewTaskField(){
     taskUl = $('#tasks ul')
-    newField = $('<li><input class="whiteboard_field text_font"></input></li>');
+    newField = $('<li><span class="glyphicon glyphicon-chevron-right"></span><input class="whiteboard_field text_font"></input></li>');
     newField.appendTo(taskUl);
     return newField;
 }
@@ -194,7 +194,7 @@ $(function() {
             $( this ).find( ".placeholder" ).remove();
             var text = ui.draggable.find('input').val();
             var id = ui.draggable.find('input').data('id');
-            if ($( this ).find("li[data-id='"+id+"']").length == 0){
+            if (id != undefined && $( this ).find("li[data-id='"+id+"']").length == 0){
                 $( "<li></li>" ).text( text ).data('id', id).appendTo( this );
                 $.ajax({
                     method: 'POST',
