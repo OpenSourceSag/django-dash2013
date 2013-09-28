@@ -73,4 +73,7 @@ class SprintTasks(models.Model):
     sprint = models.ForeignKey(Sprint, related_name='sprints')
     task = models.ForeignKey(Task, related_name='tasks')
     task_end_status = models.CharField(max_length=2, choices=TASKS_STATUS)
+    
+    class Meta:
+        unique_together = ('sprint', 'task')
 
