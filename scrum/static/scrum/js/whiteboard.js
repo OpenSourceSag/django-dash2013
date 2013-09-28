@@ -43,7 +43,7 @@ function saveStory(storyField){
             url: 'story/'+storyId+'/',
             data: storyData
         }).fail(function(){
-            $(taskField).parent().remove();
+            errorMessage('The story could not be saved');
         }); 
     }else{
         $.ajax({
@@ -54,6 +54,7 @@ function saveStory(storyField){
             $(storyField).data('id', data.story_pk);
         }).fail(function(){
             $(storyField).parent().remove();
+            errorMessage('The story could not be saved');
         }); 
     }
 }
@@ -71,7 +72,7 @@ function saveTask(taskField){
             url: 'task/'+taskId+'/',
             data: taskData
         }).fail(function(){
-            $(taskField).parent().remove();
+            errorMessage('The task could not be saved');
         }); 
     }else{
         $.ajax({
@@ -82,6 +83,7 @@ function saveTask(taskField){
             $(taskField).data('id', data.task_pk);
         }).fail(function(){
             $(taskField).parent().remove();
+            errorMessage('The task could not be added');
         }); 
     }
 }
@@ -107,8 +109,8 @@ function saveProject(){
         url: 'update/',
         type: 'POST',
         data: projectData
-    }).done(function(){
-        $('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>...</div>').appendTo($('body')).alert();
+    }).fail(function(){
+        errorMessage('The project could not be saved');
     }); 
 }
 
@@ -210,7 +212,7 @@ $(function() {
             var id = ui.draggable.find('input').data('id');
             var sprintId = $(this).data('id')
             if (id != undefined && $( this ).find("li[data-id='"+id+"']").length == 0){
-                $( "<li></li>" ).text( text ).data('id', id).appendTo( this );
+                var sprintTaskTag = $( "<li></li>" ).text( text ).data('id', id).appendTo( this );
                 $.ajax({
                     method: 'POST',
                     url: 'sprint-task/add/',
@@ -218,9 +220,13 @@ $(function() {
                         task: id,
                         sprint: sprintId
                     }
+                }).fail(function(){
+                    sprintTaskTag.remove();
+                    errorMessage('Unable to add the task to the specified sprint');
                 });
             }else{
                 //Display Message
+                errorMessage('You cannot add task that is already in the sprint');
             }
         }
     });
