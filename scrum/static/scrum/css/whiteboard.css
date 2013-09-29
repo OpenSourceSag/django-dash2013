@@ -2,6 +2,20 @@
     display: none;
 }
 
+#tasks li {
+    display: none;
+}
+
 .visible_sprint ul {
     display: block;
 }
+
+.visible_task{
+    display: block !important;
+}
+
+.story_selected{
+    background-color: #00A;
+}
+
+

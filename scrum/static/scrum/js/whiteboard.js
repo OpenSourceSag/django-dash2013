@@ -30,10 +30,11 @@ function saveStory(storyField){
 
 function saveTask(taskField){
     taskId = $(taskField).data('id');
+    storyId = $('.story_selected input').data('id');
     taskData = {
         title: $(taskField).val(),
         estimated_time: 0,
-        story: 1
+        story: storyId
     };    
     if (taskId){
         $.ajax({
@@ -86,16 +87,24 @@ function saveProject(){
 function addNewStoryField(){
     // debugger;
     storyUl = $('#stories ul')
-    newField = $('<li><input class="whiteboard_field text_font"></input></li>');
-    newField.appendTo(storyUl);
-    return newField;
+    if($('.empty-story').length == 0){
+        newField = $('<li class="empty-story"><input class="whiteboard_field text_font"></input></li>');
+        newField.appendTo(storyUl);
+        return newField;
+    }else{
+        return $('.empty-story');
+    }
 }
 
 function addNewTaskField(){
     taskUl = $('#tasks ul')
-    newField = $('<li><span class="glyphicon glyphicon-chevron-right"></span><input class="whiteboard_field text_font"></input></li>');
-    newField.appendTo(taskUl);
-    return newField;
+    if($('.empty-task').length == 0){
+        newField = $('<li class="empty-task visible_task"><span class="glyphicon glyphicon-chevron-right"></span><input class="whiteboard_field text_font"></input></li>');
+        newField.appendTo(taskUl);
+        return newField;
+    }else{
+        return $('.empty-task');
+    }
 }
 
 function addNewSprint(){
@@ -122,6 +131,12 @@ function syncProject(){
 
 }
 
+function toggleStorySelection(element){
+    $(element).parent().toggleClass('story_selected');
+    $('.empty-task').toggleClass('visible_task');
+    $("li[data-story='"+$(element).data('id')+"']").toggleClass('visible_task');
+}
+
 //Events functions
 function onHeaderFieldKeydown(e){
     if(e.which == 13 && e.target.value != '' && e.shiftKey == false){
@@ -138,12 +153,17 @@ function onHeaderFieldChange(e){
 function onStoryFieldKeydown(e){
     if(e.which == 13 && e.target.value != ''){
         event.preventDefault();
+        $(e.target).parent().removeClass('empty-story');
         storyField = addNewStoryField();
         storyField.find('input').focus();
     }
 }
-function onStoryFieldEnter(e){
-    e.target;
+
+function onStoryFieldFocus(e){
+    if($('.story_selected input').length > 0){
+        toggleStorySelection($('.story_selected input'));
+    }
+    toggleStorySelection(e.target);
 }
 
 function onStoryFieldChange(e){
@@ -153,6 +173,7 @@ function onStoryFieldChange(e){
 function onTaskFieldKeydown(e){
     if(e.which == 13 && e.target.value != ''){
         event.preventDefault();
+        $(e.target).parent().removeClass('empty-task');
         taskField = addNewTaskField();
         taskField.find('input').focus();
     }
@@ -169,7 +190,7 @@ $(function() {
 
     $('#stories').on('change','input',onStoryFieldChange);
     $('#stories').on('keydown','input',onStoryFieldKeydown);
-    $('#stories').on('enter','input',onStoryFieldEnter);
+    $('#stories').on('focus','input',onStoryFieldFocus);
 
     $('#tasks').on('change','input',onTaskFieldChange);
     $('#tasks').on('keydown','input',onTaskFieldKeydown);

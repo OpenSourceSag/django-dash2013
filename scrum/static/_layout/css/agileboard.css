@@ -1,5 +1,5 @@
-@import url(http://fonts.googleapis.com/css?family=Covered+By+Your+Grace);
 @import url(http://fonts.googleapis.com/css?family=Permanent+Marker);
+@import url(http://fonts.googleapis.com/css?family=Magra);
 
 
 ul{
@@ -11,7 +11,7 @@ ul{
 }
 
 .text_font{
-    font-family: 'Covered By Your Grace', cursive;
+    font-family: 'Magra', cursive;
 }
 
 .ui-state-hover{
