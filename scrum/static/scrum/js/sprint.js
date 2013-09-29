@@ -20,6 +20,23 @@ function setTaskStatus(taskId, status, postIt){
 }
 
 
+function CloseSprint(sprintId)
+{
+    $.ajax({
+            method: 'POST',
+            url: '/sprint/'+sprintId+'/close/',
+            data: {}
+        }).done(function(data){
+            if(data.error_message){
+            errorMessage(data.error_message);}
+            else{
+                document.getElementById('sprint-close-button').style.display = "none";
+            }
+        }).fail(function(){
+            errorMessage('Unable to close this sprint');
+        });
+}
+
 $(function() {
     $(".post-it").draggable({
         appendTo: "body",

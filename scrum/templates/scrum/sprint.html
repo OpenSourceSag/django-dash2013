@@ -7,6 +7,8 @@
 {% block content %}
     <header class="row">
         <h2 id=sprint_title class="col-xs-12 title_font" type="text" autofocus=autofocus>{{ sprint.project.name }} - Sprint #{{ sprint.number }}</h2>
+        {% if can_close_sprint %}<button id=sprint-close-button onclick="CloseSprint({{sprint.id}})">Close this sprint</button>{% endif %}
+        
     </header>
     <div class="row">
         <section id=todo class="col-sm-3">

@@ -4,6 +4,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render
+from django.core.urlresolvers import reverse
 
 from .models import Project, Story, Task, Sprint, SprintTasks
 from .forms import ProjectForm, StoryForm, TaskForm, SprintForm, SprintTasksForm
@@ -30,6 +31,9 @@ class SprintView(DetailView):
         context['dones'] = sprint_tasks.filter(status='DO')
         context['bugs'] = sprint_tasks.filter(status='PR')
         context['backlogs'] = sprint_tasks.filter(status='BA')
+        #Can close a sprint if the user is a manager and if the sprint is not closed
+        context['can_close_sprint'] = 'manager' in (s.lower() for s in self.request.user.groups.values_list('name',flat=True)) and not sprint.is_closed
+        
 
         return context
 
@@ -196,18 +200,10 @@ def update_task(request, pk_task):
 
 
 def add_project(request):
-    if request.method == 'POST':
-        response_data = {}
+    if request.method == 'GET':
 
-        #Call form with post values
-        f = ProjectForm(request.POST)
-        if f.is_valid():
-            new_project = f.save()
-            response_data['project_pk'] = new_project.pk
-        else:
-            print f.errors
-
-        return HttpResponse(json.dumps(response_data), content_type="application/json")
+        newProject = Project.objects.create()
+        return HttpResponseRedirect(reverse('project', args=(newProject.pk,)))
     else:
         raise Http404
 
@@ -258,6 +254,17 @@ def add_sprint(request, pk):
         newSprint = Sprint.objects.create(project_id=pk)
         response = {'id': newSprint.id, 'number': newSprint.number}
         return HttpResponse(json.dumps(response))
+    else:
+        raise Http404
+    
+def close_sprint(request, pk):
+    if request.method == 'POST':
+        sprint = Sprint.objects.get(pk=pk)
+        sprint.is_closed = True
+        sprint.save()
+        
+        response_data = {}
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         raise Http404
 

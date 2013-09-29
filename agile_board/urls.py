@@ -12,6 +12,7 @@ urlpatterns = patterns('',
 
     url(r'^$', login_required(ProjectListView.as_view()), name='projectlist'),
     url(r'^sprint/(?P<pk>[0-9]+)/$', login_required(SprintView.as_view()), name='sprint'),
+    url(r'^sprint/(?P<pk>[0-9]+)/close/$', close_sprint, name='closesprint'),
     url(r'^project/(?P<pk>[0-9]+)/$', login_required(WhiteBoardView.as_view()), name='project'),
     url(r'^project/(?P<pk_project>[0-9]+)/update/$', login_required(update_project), name='updateproject'),
     url(r'^project/(?P<pk_project>[0-9]+)/story/add/$', login_required(add_story), name='addstory'),
