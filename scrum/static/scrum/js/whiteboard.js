@@ -186,7 +186,6 @@ function onTaskFieldChange(e){
     saveTask(e.target);
 }
 
-//TODO: Add the sprint drag&drop events
 
 $(function() {
     $('header .whiteboard_field').change(onHeaderFieldChange);
