@@ -134,9 +134,24 @@ def update_task(request, pk_task):
             post_values = request.POST.copy()
             post_values['status'] = task.status
 
-            #If a POST status exist (update a task's status)
+            #If a POST status exist (update a task's status) 
             post_status = request.POST.get('status', None)
             if post_status:
+                
+                #Get the referer URL
+                referer_url = request.META.get('HTTP_REFERER', None)
+                
+                #If called from the Sprint page
+                if referer_url and '/sprint/' in referer_url:
+                    
+                    sprint_id = referer_url[referer_url.find('/sprint/')+8:referer_url.rfind('/')]
+                    sprint = Sprint.objects.get(pk=sprint_id)
+                    
+                    #If the sprint is closed
+                    if sprint.is_closed:
+                        response_data['error_message'] = 'This sprint is closed!'
+                        return HttpResponse(json.dumps(response_data), content_type="application/json")
+
                 post_values['status'] = post_status
                 post_values['estimated_time'] = task.estimated_time
                 post_values['story'] = task.story.pk
