@@ -129,7 +129,8 @@ def update_task(request, pk_task):
 
         if pk_task:
             task = Task.objects.get(pk=pk_task)
-
+            old_task_status = task.status
+            
             #Add the task's status to post values
             post_values = request.POST.copy()
             post_values['status'] = task.status
@@ -161,14 +162,15 @@ def update_task(request, pk_task):
                 if post_status == 'IN':
                     post_values['assigned_to'] = request.user.pk
 
-                #Only manager can move to backlog
-                elif post_status == 'BA':
+                #Only manager can move to or from backlog
+                elif (old_task_status != 'BA' and post_status == 'BA') or (old_task_status == 'BA' and post_status != 'BA'):
                     #If the user is not a manager
                     if not(any(s.lower() == 'manager' for s in request.user.groups.values_list('name',flat=True))):
 
                         response_data['error_message'] = 'You are not allowed to do that!'
                         return HttpResponse(json.dumps(response_data), content_type="application/json")
-
+                
+                    
 
             #Call form with post values
             f = TaskForm(post_values, instance=task)
