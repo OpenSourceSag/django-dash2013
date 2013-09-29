@@ -22,7 +22,3 @@ class SprintTasksForm(ModelForm):
      class Meta:
          model = SprintTasks
 
-class UserForm(ModelForm):
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'password', 'is_staff','is_superuser')

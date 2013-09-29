@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 
 from .models import Project, Story, Task, Sprint, SprintTasks
-from .forms import ProjectForm, StoryForm, TaskForm, SprintForm, SprintTasksForm, UserForm
+from .forms import ProjectForm, StoryForm, TaskForm, SprintForm, SprintTasksForm
 
 import string
 import json
@@ -278,22 +278,3 @@ class ProjectListView(ListView):
         #context['backlogs'] = sprint_tasks.filter(status='BA')
         #
         return context
-
-
-def sign_up(request):
-    if request.method == "POST":
-        form = UserForm(request.POST)
-        if form.is_valid():
-            new_user = User.objects.create_user(username=form.cleaned_data['username'],
-                                                email=form.cleaned_data['email'],
-                                                password=form.cleaned_data['password'])
-            new_user.is_staff = form.cleaned_data['is_staff']
-            new_user.is_superuser = form.cleaned_data['is_superuser']
-            new_user.save()
-
-            # redirect, or however you want to get to the main view
-            return HttpResponseRedirect('/login')
-    else:
-        form = UserForm()
-
-    return render(request, 'scrum/registration/sign_up.html', {'form': form})

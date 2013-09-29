@@ -25,5 +25,4 @@ urlpatterns = patterns('',
 
     url(r'^login/?$', 'django.contrib.auth.views.login', {'template_name': 'scrum/registration/login.html', }, name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'scrum/registration/logged_out.html', }, name='logout'),
-    url(r'^signup/$', sign_up, name='signup'),
 )
