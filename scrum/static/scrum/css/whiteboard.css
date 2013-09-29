@@ -55,9 +55,10 @@ h3{
     background-color: #FFF;
     padding: 40px;
     padding-bottom: 70px;
-    background-image: url('../images/pencils2.png'), url('../images/board_tl.png'), url('../images/board_tr.png'), url('../images/board_bl.png'), url('../images/board_br.png'), url('../images/board_t.png'), url('../images/board_l.png'), url('../images/board_r.png'), url('../images/board_b.png'), url('../images/doodle_left.png'), url('../images/doodle_right.png');
-    background-position: bottom, top left, top right, bottom left, bottom right, top, left, right, bottom, top left, top right;
-    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat-x, repeat-y, repeat-y, repeat-x, no-repeat, no-repeat;
+    margin-top: 40px;
+    background-image: url('../images/postit1.png'), url('../images/postit2.png'), url('../images/pencils2.png'), url('../images/board_tl.png'), url('../images/board_tr.png'), url('../images/board_bl.png'), url('../images/board_br.png'), url('../images/board_t.png'), url('../images/board_l.png'), url('../images/board_r.png'), url('../images/board_b.png'), url('../images/doodle_left.png'), url('../images/doodle_right.png');
+    background-position: top left, top right, bottom, top left, top right, bottom left, bottom right, top, left, right, bottom, top left, top right;
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat-x, repeat-y, repeat-y, repeat-x, no-repeat, no-repeat;
 }
 
 
