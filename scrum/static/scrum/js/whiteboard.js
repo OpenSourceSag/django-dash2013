@@ -109,7 +109,7 @@ function addNewTaskField(){
 
 function addNewSprint(){
     $.ajax('sprint/add/').done(function(data){
-        $('<li><div>Sprint #'+data.number+'<div><ul data-id="'+data.id+'" class="sprint_tasks"><li>The sprint is empty. Put some gaz!</li></ul></li>').appendTo($('#sprint ul'));
+        $('<li><div>Sprint #'+data.number+'<div><ul data-id="'+data.id+'" class="sprint_tasks"><li>The sprint is empty. Put some gaz!</li></ul></li>').appendTo($('#sprints ul'));
     }).fail(function(){
         errorMessage('Unable to create a new sprint');
     });

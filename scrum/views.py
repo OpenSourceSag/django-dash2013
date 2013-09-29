@@ -1,20 +1,17 @@
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 
 from .models import Project, Story, Task, Sprint, SprintTasks
-from .forms import ProjectForm, StoryForm, TaskForm, SprintForm, SprintTasksForm
+from .forms import ProjectForm, StoryForm, TaskForm, SprintTasksForm
 
-import string
 import json
 
+
 def is_manager(user):
-    return 'manager' in (s.lower() for s in user.groups.values_list('name',flat=True))
+    return 'manager' in (s.lower() for s in user.groups.values_list('name', flat=True))
 
 
 class SprintView(DetailView):
@@ -35,9 +32,8 @@ class SprintView(DetailView):
         context['dones'] = sprint_tasks.filter(status='DO')
         context['bugs'] = sprint_tasks.filter(status='PR')
         context['backlogs'] = sprint_tasks.filter(status='BA')
-        #Can close a sprint if the user is a manager and if the sprint is not closed
-        context['can_close_sprint'] = is_manager(self.request.user) and not sprint.is_closed
-        
+        #Can close a sprint if the user is a manager, if the sprint is not closed and if there is at least one task
+        context['can_close_sprint'] = is_manager(self.request.user) and not sprint.is_closed and sprint.tasks.count() > 0
 
         return context
 
@@ -45,7 +41,7 @@ class SprintView(DetailView):
 class WhiteBoardView(DetailView):
 
     model = Project
-    
+
     def get_context_data(self, **kwargs):
         context = super(WhiteBoardView, self).get_context_data(**kwargs)
 
@@ -62,7 +58,7 @@ class WhiteBoardView(DetailView):
         context['backlogs'] = project_tasks_backlog
 
         return context
-    
+
     def render_to_response(self, context, **response_kwargs):
         #If the user is not a manager
         if is_manager(self.request.user):
@@ -70,11 +66,11 @@ class WhiteBoardView(DetailView):
             self.template_name = 'scrum/whiteboard.html'
         else:
             self.template_name = 'scrum/whiteboard_read.html'
-        
+
         return self.response_class(
-            request = self.request,
-            template = self.template_name,
-            context = context,
+            request=self.request,
+            template=self.template_name,
+            context=context,
             **response_kwargs
         )
 
@@ -128,7 +124,6 @@ def add_task(request, pk_project):
     if request.method == 'POST':
         response_data = {}
 
-
         post_values = request.POST.copy()
         post_values['project'] = pk_project
         post_values['status'] = 'TO'
@@ -153,24 +148,24 @@ def update_task(request, pk_task):
         if pk_task:
             task = Task.objects.get(pk=pk_task)
             old_task_status = task.status
-            
+
             #Add the task's status to post values
             post_values = request.POST.copy()
             post_values['status'] = task.status
 
-            #If a POST status exist (update a task's status) 
+            #If a POST status exist (update a task's status)
             post_status = request.POST.get('status', None)
             if post_status:
-                
+
                 #Get the referer URL
                 referer_url = request.META.get('HTTP_REFERER', None)
-                
+
                 #If called from the Sprint page
                 if referer_url and '/sprint/' in referer_url:
-                    
+
                     sprint_id = referer_url[referer_url.find('/sprint/')+8:referer_url.rfind('/')]
                     sprint = Sprint.objects.get(pk=sprint_id)
-                    
+
                     #If the sprint is closed
                     if sprint.is_closed:
                         response_data['error_message'] = 'This sprint is closed!'
@@ -192,18 +187,16 @@ def update_task(request, pk_task):
 
                         response_data['error_message'] = 'You are not allowed to do that!'
                         return HttpResponse(json.dumps(response_data), content_type="application/json")
-                
-                    
 
             #Call form with post values
             f = TaskForm(post_values, instance=task)
             if f.is_valid():
                 task = f.save()
                 response_data['task_pk'] = task.pk
-                
+
                 first_name = request.user.first_name
                 last_name = request.user.last_name
-                
+
                 #Send username if no first_name nor last_name
                 if first_name or last_name:
                     response_data['full_name'] = ' '.join(filter(None, (first_name, last_name)))
@@ -253,8 +246,8 @@ def add_sprint_task(request):
 
         #Add the task, sprint and task_end_status to post values
         post_data['task_end_status'] = 'DO'
-        post_data['sprint'] = request.POST.get('sprint',None)
-        post_data['task'] = request.POST.get('task',None)
+        post_data['sprint'] = request.POST.get('sprint', None)
+        post_data['task'] = request.POST.get('task', None)
 
         #Call form with post values
         f = SprintTasksForm(post_data)
@@ -272,28 +265,29 @@ def add_sprint(request, pk):
     if request.method == 'GET':
         newSprint = Sprint.objects.create(project_id=pk)
         response = {'id': newSprint.id, 'number': newSprint.number}
-        return HttpResponse(json.dumps(response))
+        return HttpResponse(json.dumps(response), content_type="application/json")
     else:
         raise Http404
-    
+
+
 def close_sprint(request, pk):
     if request.method == 'POST':
 
         response_data = {}
         #If all tasks are not in backlog or done
-        if SprintTasks.objects.filter(sprint__pk = pk).exclude(Q(task__status='DO') | Q(task__status='BA')).count() != 0:
+        if SprintTasks.objects.filter(sprint__pk=pk).exclude(Q(task__status='DO') | Q(task__status='BA')).count() != 0:
             response_data['error_message'] = 'All tasks must be done or backloged!'
             return HttpResponse(json.dumps(response_data), content_type="application/json")
-        
+
         #We change the task end status of each sprinttask
-        for st in SprintTasks.objects.filter(sprint__pk = pk):
+        for st in SprintTasks.objects.filter(sprint__pk=pk):
             st.task_end_status = st.task.status
             st.save()
-            
+
         sprint = Sprint.objects.get(pk=pk)
         sprint.is_closed = True
         sprint.save()
-        
+
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         raise Http404
@@ -301,19 +295,3 @@ def close_sprint(request, pk):
 
 class ProjectListView(ListView):
     model = Project
-
-    def get_context_data(self, **kwargs):
-        context = super(ProjectListView, self).get_context_data(**kwargs)
-        sprint = kwargs.get('object')
-        ##Get all tasks
-        #sprint_tasks = sprint.tasks.all()
-        #
-        ##Set template's data
-        #context['sprint'] = sprint
-        #context['todos'] = sprint_tasks.filter(status='TO')
-        #context['doings'] = sprint_tasks.filter(status='IN')
-        #context['dones'] = sprint_tasks.filter(status='DO')
-        #context['bugs'] = sprint_tasks.filter(status='PR')
-        #context['backlogs'] = sprint_tasks.filter(status='BA')
-        #
-        return context
