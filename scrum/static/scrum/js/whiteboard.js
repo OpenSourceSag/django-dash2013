@@ -180,6 +180,7 @@ $(function() {
             var id = ui.draggable.find('input').data('id');
             var sprintId = $(this).data('id')
             if (id != undefined && $( this ).find("li[data-id='"+id+"']").length == 0){
+                ui.draggable.remove();
                 var sprintTaskTag = $( "<li></li>" ).text( text ).data('id', id).appendTo( this );
                 $.ajax({
                     method: 'POST',
