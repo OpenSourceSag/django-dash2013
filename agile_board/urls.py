@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from scrum.views import *
 
@@ -34,3 +35,5 @@ urlpatterns += patterns('',
         'document_root': settings.STATIC_ROOT
     }),
 )
+
+urlpatterns += staticfiles_urlpatterns()
