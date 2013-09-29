@@ -74,5 +74,6 @@ class Command(BaseCommand):
             manager_group = Group.objects.create(name=MANAGER_GROUP)
         
         user.groups.add(manager_group)
+        user.save()
         
         print '*** Installation complete! ***'
