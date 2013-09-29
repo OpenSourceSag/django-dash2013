@@ -14,7 +14,7 @@ li {
     font-size: 20px;
     font-family: 'Permanent Marker', cursive;
     box-shadow: 5px 5px 3px #333;
-    
+    cursor: move;
 }
 
 #sprint_title{
