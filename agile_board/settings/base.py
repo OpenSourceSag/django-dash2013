@@ -132,6 +132,10 @@ INSTALLED_APPS = (
     'scrum',
 )
 
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL  = '/project'
+LOGOUT_URL = '/logout'
+
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
 # A sample logging configuration. The only tangible logging

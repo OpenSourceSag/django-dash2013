@@ -1,0 +1,37 @@
+{% extends '_layout/base.html' %}
+{% load i18n %}
+{% load static %}
+{% load url from future %}
+{% block extra_css %}
+    <link href="" rel="stylesheet" media="screen">
+{% endblock %}
+{% block content %}
+    <header class="row">
+    </header>
+    <div class="row">
+        
+        <section id=logo class="col-sm-4">
+          
+        </section>
+            
+        <section id=login class="col-sm-4">
+            <h3>{% trans 'Create a user' %}</h3>
+            <form method="post" action="">{% csrf_token %}
+                {{ form }}
+                <div class="submit-row">
+                  <label>&nbsp;</label><input type="submit" value="{% trans 'Create' %}" />
+                </div>
+            </form>
+        </section>
+        
+        </section>
+        
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src=""></script>
+{% endblock %}
+
+
+

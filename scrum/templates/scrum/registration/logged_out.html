@@ -1,0 +1,29 @@
+{% extends '_layout/base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block extra_css %}
+    <link href="" rel="stylesheet" media="screen">
+{% endblock %}
+{% block content %}
+    <header class="row">
+    </header>
+    <div class="row">
+        
+        <section id=logo class="col-sm-4">
+          
+        </section>
+            
+        <section id=login class="col-sm-4">
+            <h3>{% trans 'You are logged out' %}</h3>
+            <a href="{% url 'login' %}" class="button"><span class="btn">Home</span><span class="clear"></span></a>
+        </section>
+        
+        </section>
+        
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src=""></script>
+{% endblock %}

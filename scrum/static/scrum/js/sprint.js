@@ -6,10 +6,16 @@ function setTaskStatus(taskId, status, postIt){
             data: {
                status: status
             }
+        }).done(function(data){
+            if(data.error_message){
+            errorMessage(data.error_message);
+            $(postIt).remove();}
         }).fail(function(){
             $(postIt).remove();
             errorMessage('Unable to change the status of the task');
         });
+        
+        
     }
 }
 
