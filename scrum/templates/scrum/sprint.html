@@ -10,6 +10,7 @@
     </header>
     <div class="row">
         <section id=todo class="col-sm-3">
+            <h3 class="title_font">{% trans 'To do' %}</h3>
             <ul>
                 {% for todo in todos %}
                     <li><div data-id={{ todo.id }} class="post-it text_font">{{ todo.title }}</div></li>
@@ -20,6 +21,7 @@
         </section>
             
         <section id=doing class="col-sm-3">
+            <h3 class="title_font">{% trans 'Doing' %}</h3>
             <ul>
                 {% for doing in doings %}
                     <li><div data-id={{ doing.id }} class="post-it text_font">{{doing}}"</div></li>
@@ -30,6 +32,7 @@
         </section>
         
         <section id=done class="col-sm-3">
+            <h3 class="title_font">{% trans 'Done' %}</h3>
             <ul>
                 {% for done in dones %}
                     <li><div data-id={{ done.id }} class="post-it text_font">{{done}}"</div></li>
@@ -41,6 +44,7 @@
         
         <div id=bugs_backlogs class="col-sm-3">
             <section id=bug class="row">
+                <h3 class="title_font">{% trans 'In problems' %}</h3>
                 <ul>
                    {% for bug in bugs %}
                         <li><div data-id={{ bug.id }} class="post-it text_font">{{bug}}"</div></li>
@@ -50,6 +54,7 @@
                 </ul>
             </section>
             <section id=backlog class="row">
+                <h3 class="title_font">{% trans 'Backlog' %}</h3>
                 <ul>
                     {% for backlog in backlogs %}
                         <li><div data-id={{ backlog.id }} class="post-it text_font">{{backlog}}"</div></li>
