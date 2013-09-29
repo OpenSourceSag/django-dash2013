@@ -6,9 +6,9 @@
     <title>{% block title %}{% endblock %}Agile-board</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link href="{% static '_layout/css/agileboard.css' %}" rel="stylesheet" media="screen">
     <link href="{% static 'scrum/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
     <link href="{% static 'scrum/css/jquery-ui-1.10.3.custom.min.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static '_layout/css/agileboard.css' %}" rel="stylesheet" media="screen">
     {% block extra_css %}{% endblock %}
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -18,12 +18,19 @@
   </head>
   <body>
     <div id=container class="container">
-        <h1>{% trans 'Welcome to Agile-board' %}</h1>
-        {% if user.is_authenticated %}<a href="{% url 'logout' %}" class="button"><span class="btn">Logout</span></a>{% endif %}
+        <header class="row">
+            {% block header %}
+                {% if user.is_authenticated %}<a href="{% url 'logout' %}" id=logout class="button"><span class="btn">Logout</span></a>{% endif %}
+                <h1>Agile-Board</h1>
+            {% endblock %}
+        </header>
         {% block content %}
         {% endblock %}
     </div>
 
+    <footer class="container">
+        <h4>Agile-Board</h4> by <em class="title_font">OpenSourceSag</em>
+    </footer>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="//code.jquery.com/jquery.js"></script>

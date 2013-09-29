@@ -1,0 +1,31 @@
+body{
+    background-image: url('../images/head_page.png'), url('../../_layout/images/footer.png'), url('../../_layout/images/shadow.png'), url('../../_layout/images/fond.gif');
+    background-size: auto, auto, 100% 100%, auto;
+    background-repeat: no-repeat, repeat-x, no-repeat, repeat;
+    background-position: top right, bottom left, top left, top left;
+
+    color: #cdcdcd;
+}
+
+ul{
+    list-style: disc;
+    padding-left: 40px;
+}
+
+.whtbrd-btn, .sprint-btn{
+    background: #e0e0e0;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 0 10px;
+    margin-left: 10px;
+}
+
+/* .sprint-btn{ */
+/*     text-indent: -99999999px; */
+/*     background: url('../images/btn_sprint.png'); */
+/*     display: inline-block; */
+/*     width: 54px; */
+/*     height: 19px; */
+/* } */

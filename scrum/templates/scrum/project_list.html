@@ -2,22 +2,24 @@
 {% load i18n %}
 {% load static %}
 {% block extra_css %}
-    <link href="{% static 'scrum/css/whiteboard.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'scrum/css/pages.css' %}" rel="stylesheet" media="screen">
 {% endblock %}
+
+{% block header %}
+    {{ block.super }}
+    <h2 id=sprint_title class="col-xs-12 title_font" type="text" autofocus=autofocus>{% trans 'Projects' %}</h2>
+{% endblock %}
+
 {% block content %}
-    <header class="row">
-        <h2 id=sprint_title class="col-xs-12 title_font" type="text" autofocus=autofocus>Projects</h2>
-    </header>
     <div class="row">
-        
         <section id=project_list class="col-sm-8">
                 <ul>
                 {% for project in object_list %}
                     <li>
                         <span class="text_font" >{{project}}</span>
-                        <a href="{% url 'project' project.id %}" class="title_font">Whiteboard</a>
+                        <a href="{% url 'project' project.id %}" class="title_font whtbrd-btn">Whiteboard</a>
                         {% for sprint in project.sprints.active %}
-                            <a href="{% url 'sprint' sprint.id %}" class="title_font">Sprint</a>
+                            <a href="{% url 'sprint' sprint.id %}" class="title_font sprint-btn">Sprint</a>
                         {% endfor %}
                     </li>
                     {% empty %}
