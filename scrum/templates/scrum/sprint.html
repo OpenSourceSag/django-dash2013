@@ -4,6 +4,11 @@
 {% block extra_css %}
     <link href="{% static 'scrum/css/sprint.css' %}" rel="stylesheet" media="screen">
 {% endblock %}
+
+{% block header %}
+<a href="/">{% trans 'Back to project list' %}</a>
+{% endblock %}
+
 {% block content %}
     <div id=whiteboard_bg class="row">
         <header id=sprint_head class="row">

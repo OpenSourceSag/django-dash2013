@@ -35,7 +35,7 @@ h3{
 }
 
 .story_selected{
-    background-color: #00A;
+    background-color: #88D;
 }
 
 #project_head{
@@ -51,6 +51,15 @@ h3{
     font-size: 22px;
 }
 
+.whiteboard_field{
+    border: none;
+    background-color: transparent;
+    /* background-image: url('../images/input.png'); */
+}
+
+.empty-task input, .empty-story input{
+    border-bottom: 1px black solid;
+}
 #whiteboard_bg {
     background-color: #FFF;
     padding: 40px;
