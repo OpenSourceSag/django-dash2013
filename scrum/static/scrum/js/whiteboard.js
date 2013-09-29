@@ -109,8 +109,9 @@ function addNewTaskField(){
 
 function addNewSprint(){
     $.ajax('sprint/add/').done(function(data){
-        $('<li><div>Sprint #'+data.number+'<div><ul data-id="'+data.id+'" class="sprint_tasks visible_sprint"><li>The sprint is empty. Put some gaz!</li></ul></li>').appendTo($('#sprints ul'));
+        $('<li><div class="text_font sprint_number">Sprint #'+data.number+'<div><ul data-id="'+data.id+'" class="sprint_tasks visible_sprint"><li>The sprint is empty. Put some gaz!</li></ul></li>').appendTo($('#sprints > ul'));
         $('#sprints li').remove(':contains(No sprints here)');
+        makeSprintDraggable();
     }).fail(function(){
         errorMessage('Unable to create a new sprint');
     });
@@ -184,26 +185,7 @@ function onTaskFieldChange(e){
     saveTask(e.target);
 }
 
-
-$(function() {
-    $('header .whiteboard_field').change(onHeaderFieldChange);
-    $('header .whiteboard_field').keydown(onHeaderFieldKeydown);
-
-    $('#stories').on('change','input',onStoryFieldChange);
-    $('#stories').on('keydown','input',onStoryFieldKeydown);
-    $('#stories').on('focus','input',onStoryFieldFocus);
-
-    $('#tasks').on('change','input',onTaskFieldChange);
-    $('#tasks').on('keydown','input',onTaskFieldKeydown);
-
-    $('#add_sprint').click(addNewSprint);
-
-    $('.sprint_number').click(function(){ $(this).parent().find('ul').toggleClass('visible_sprint'); });
-    
-    $("#tasks li").draggable({
-        appendTo: "body",
-        helper: "clone"
-    });
+function makeSprintDraggable(){
     $(".sprint_tasks").droppable({
         activeClass: "ui-state-default",
         hoverClass: "ui-state-hover",
@@ -233,5 +215,27 @@ $(function() {
             }
         }
     });
+}
+
+$(function() {
+    $('header .whiteboard_field').change(onHeaderFieldChange);
+    $('header .whiteboard_field').keydown(onHeaderFieldKeydown);
+
+    $('#stories').on('change','input',onStoryFieldChange);
+    $('#stories').on('keydown','input',onStoryFieldKeydown);
+    $('#stories').on('focus','input',onStoryFieldFocus);
+
+    $('#tasks').on('change','input',onTaskFieldChange);
+    $('#tasks').on('keydown','input',onTaskFieldKeydown);
+
+    $('#add_sprint').click(addNewSprint);
+
+    $('.sprint_number').click(function(){ $(this).parent().find('ul').toggleClass('visible_sprint'); });
+    
+    $("#tasks li").draggable({
+        appendTo: "body",
+        helper: "clone"
+    });
+    makeSprintDraggable();
 });
 
