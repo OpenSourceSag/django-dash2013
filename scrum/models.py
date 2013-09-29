@@ -48,7 +48,7 @@ class Task(models.Model):
     note = models.TextField(blank=True)
     status = models.CharField(max_length=2, choices=TASKS_STATUS)
     last_modified = models.DateTimeField(auto_now=True)
-    assigned_to = models.ManyToManyField(User, related_name='Task_users', blank=True, null=True)
+    assigned_to = models.ForeignKey(User, related_name='Task_users', blank=True, null=True)
     story = models.ForeignKey(Story, related_name='Task_story')
     estimated_time = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(8)])
     objects = TaskManager()
