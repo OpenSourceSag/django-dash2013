@@ -21,7 +21,7 @@
         <header class="row">
             {% block header %}
                 {% if user.is_authenticated %}<a href="{% url 'logout' %}" id=logout class="button"><span class="btn">Logout</span></a>{% endif %}
-                <h1>Agile-Board</h1>
+                <h1>Agile-Board</h1><a href="/"><img id=logo_top src="{% static '_layout/images/logo_top.png' %}"></a>
             {% endblock %}
         </header>
         {% block content %}

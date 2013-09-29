@@ -3,34 +3,37 @@
 {% load static %}
 {% load url from future %}
 {% block extra_css %}
-    <link href="" rel="stylesheet" media="screen">
+    <link href="{% static 'scrum/css/login.css' %}" rel="stylesheet" media="screen">
 {% endblock %}
+
+{% block header %}
+{% endblock %}
+
 {% block content %}
-    <header class="row">
-    </header>
     <div class="row">
-        
-        <section id=logo class="col-sm-4">
-          
+        <section id=login class="col-md-offset-2 col-sm-4">
+            <img src="{% static 'scrum/images/logo.png' %}" width=371 height=247 >
         </section>
-            
         <section id=login class="col-sm-4">
-            <h3>{% trans 'Connect to agile board' %}</h3>
+            <h2 class="title_font">{% trans 'Login' %}</h3>
             <form action="{{ project }}" method="post" id="login-form">{% csrf_token %}
+                <ul>
+                    <li>
                   {% if not form.this_is_the_login_form.errors %}{{ form.username.errors }}{% endif %}
                   <label for="id_username" >{{ form.username.label }}:</label> {{ form.username }}
+                    </li>
+                    <li>
                   {% if not form.this_is_the_login_form.errors %}{{ form.password.errors }}{% endif %}
                   <label for="id_password" >{% trans 'Password:' %}</label> {{ form.password }}
+                    </li>
+                </ul>
                   <input type="hidden" name="this_is_the_login_form" value="1" />
                   <input type="hidden" name="next" value="{{ next }}" />
                 <div class="submit-row">
-                  <label>&nbsp;</label><input type="submit" value="{% trans 'Log in' %}" />
+                  <label>&nbsp;</label><input class="login-btn" type="submit" value="{% trans 'Login' %}" />
                 </div>
             </form>
         </section>
-        
-        </section>
-        
     </div>
 {% endblock %}
 

@@ -1,0 +1,27 @@
+body{
+    background-image: url('../images/top_page_accueil.png'), url('../../_layout/images/footer.png'), url('../../_layout/images/shadow.png'), url('../../_layout/images/fond.gif');
+    background-size: auto, auto, 100% 100%, auto;
+    background-repeat: repeat-x, repeat-x, no-repeat, repeat;
+    background-position: top, bottom left, top left, top left;
+
+    color: #cdcdcd;
+}
+
+header {
+    margin-top: 225px;
+}
+
+#login{
+    text-align: center;
+}
+
+.login-btn{
+    color: #cdcdcd;
+    font-size: 35px;
+    font-weight: bold;
+    background: url('../images/btn_login.png');
+    cursor:pointer;
+    width: 155px;
+    height: 55px;
+    border: none;
+}
