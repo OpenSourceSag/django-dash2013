@@ -99,7 +99,11 @@ function addNewTaskField(){
 }
 
 function addNewSprint(){
-
+    $.ajax('sprint/add/').done(function(data){
+        $('<li><div>Sprint #'+data.number+'<div><ul data-id="'+data.id+'" class="sprint_tasks"><li>The sprint is empty. Put some gaz!</li></ul></li>').appendTo($('#sprint ul'));
+    }).fail(function(){
+        errorMessage('Unable to create a new sprint');
+    });
 }
 
 function syncStories(data){
@@ -165,6 +169,10 @@ $(function() {
 
     $('#tasks').on('change','input',onTaskFieldChange);
     $('#tasks').on('keydown','input',onTaskFieldKeydown);
+
+    $('#add_sprint').click(addNewSprint);
+
+    $('.sprint_number').click(function(){ $(this).toggleClass('visible_sprint'); });
     
     $("#tasks li").draggable({
         appendTo: "body",

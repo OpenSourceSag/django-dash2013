@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     url(r'^project/(?P<pk_project>[0-9]+)/task/add/$', login_required(add_task), name='addtask'),
     url(r'^project/[0-9]+/task/(?P<pk_task>[0-9]+)/$', login_required(update_task), name='updatetask'),
     url(r'^project/[0-9]+/sprint-task/add/$', login_required(add_sprint_task), name='updatetask'),
-    url(r'^project/[0-9]+/sprint/add/$', login_required(add_sprint), name='sprintadd'),
+    url(r'^project/(?P<pk>[0-9]+)/sprint/add/$', login_required(add_sprint), name='sprintadd'),
     url(r'^project/add/$', login_required(add_project), name='addproject'),
     url(r'^task/(?P<pk_task>[0-9]+)/update-status/$', login_required(update_task), name='updatetaskstatus'),
 

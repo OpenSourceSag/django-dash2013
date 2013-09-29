@@ -239,23 +239,11 @@ def add_sprint_task(request):
         raise Http404
 
 
-def add_sprint(request):
-    if request.method == 'POST':
-        post_data = {}
-
-        #Add the task, sprint and task_end_status to post values
-        post_data['task_end_status'] = 'DO'
-        post_data['sprint'] = request.POST.get('sprint',None)
-        post_data['task'] = request.POST.get('task',None)
-
-        #Call form with post values
-        f = SprintFrom(post_data)
-        if f.is_valid():
-            f.save()
-        else:
-            print f.errors
-
-        return HttpResponse()
+def add_sprint(request, pk):
+    if request.method == 'GET':
+        newSprint = Sprint.objects.create(project_id=pk)
+        response = {'id': newSprint.id, 'number': newSprint.number}
+        return HttpResponse(json.dumps(response))
     else:
         raise Http404
 

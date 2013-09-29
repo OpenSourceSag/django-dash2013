@@ -1,0 +1,7 @@
+.sprint_tasks{
+    display: none;
+}
+
+.visible_sprint ul {
+    display: block;
+}
