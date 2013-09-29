@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block header %}
-
+<a href="/">{% trans 'Back to project list' %}</a>
 {% endblock %}
 
 {% block content %}
@@ -31,11 +31,10 @@
                 <ul>
                     {% for task in tasks %}
                         <li data-story="{{ task.story_id }}">
-                            <span class="glyphicon glyphicon-chevron-right">
-                            </span><input data-id={{ task.id }} class="whiteboard_field text_font" value="{{task}}"></input>
+                            *  <input data-id={{ task.id }} class="whiteboard_field text_font" value="{{task}}"></input>
                         </li>
                     {% endfor %}
-                    <li class="empty-task"><span class="glyphicon glyphicon-chevron-right"></span><input class="whiteboard_field text_font"></input></li>
+                    <li class="empty-task">*  <input class="whiteboard_field text_font"></input></li>
                 </ul>
             </section>
             
@@ -48,7 +47,7 @@
                                 <div class="text_font sprint_number">Sprint #{{ sprint.number }}</div>
                                 <ul data-id="{{ sprint.id }}" class="sprint_tasks{% if forloop.last%} visible_sprint{% endif %}">
                                     {% for task in sprint.tasks.all %}
-                                        <li data-id="{{ task.id }}"><span class="glyphicon glyphicon-remove"></span>{{ task.title }}</li>
+                                        <li data-id="{{ task.id }}">*  {{ task.title }}</li>
                                     {% empty %}
                                         <li>{% trans 'The sprint is empty. Put some gaz!' %}</li>
                                     {% endfor %}
