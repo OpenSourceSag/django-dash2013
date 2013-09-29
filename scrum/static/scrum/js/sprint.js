@@ -28,8 +28,8 @@ function CloseSprint(sprintId)
             data: {}
         }).done(function(data){
             if(data.error_message){
-            errorMessage(data.error_message);}
-            else{
+                errorMessage(data.error_message);
+            }else{
                 document.getElementById('sprint-close-button').style.display = "none";
             }
         }).fail(function(){

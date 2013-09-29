@@ -5,12 +5,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 
 from .models import Project, Story, Task, Sprint, SprintTasks
 from .forms import ProjectForm, StoryForm, TaskForm, SprintForm, SprintTasksForm
 
 import string
 import json
+
+def is_manager(user):
+    return 'manager' in (s.lower() for s in user.groups.values_list('name',flat=True))
 
 
 class SprintView(DetailView):
@@ -32,16 +36,16 @@ class SprintView(DetailView):
         context['bugs'] = sprint_tasks.filter(status='PR')
         context['backlogs'] = sprint_tasks.filter(status='BA')
         #Can close a sprint if the user is a manager and if the sprint is not closed
-        context['can_close_sprint'] = 'manager' in (s.lower() for s in self.request.user.groups.values_list('name',flat=True)) and not sprint.is_closed
+        context['can_close_sprint'] = is_manager(self.request.user) and not sprint.is_closed
         
 
         return context
 
 
 class WhiteBoardView(DetailView):
-    template_name = 'scrum/whiteboard.html'
-    model = Project
 
+    model = Project
+    
     def get_context_data(self, **kwargs):
         context = super(WhiteBoardView, self).get_context_data(**kwargs)
 
@@ -58,6 +62,21 @@ class WhiteBoardView(DetailView):
         context['backlogs'] = project_tasks_backlog
 
         return context
+    
+    def render_to_response(self, context, **response_kwargs):
+        #If the user is not a manager
+        if is_manager(self.request.user):
+            #Display whiteboard in read only
+            self.template_name = 'scrum/whiteboard.html'
+        else:
+            self.template_name = 'scrum/whiteboard_read.html'
+        
+        return self.response_class(
+            request = self.request,
+            template = self.template_name,
+            context = context,
+            **response_kwargs
+        )
 
 
 def add_story(request, pk_project):
@@ -169,7 +188,7 @@ def update_task(request, pk_task):
                 #Only manager can move to or from backlog
                 elif (old_task_status != 'BA' and post_status == 'BA') or (old_task_status == 'BA' and post_status != 'BA'):
                     #If the user is not a manager
-                    if not(any(s.lower() == 'manager' for s in request.user.groups.values_list('name',flat=True))):
+                    if not(is_manager(request.user)):
 
                         response_data['error_message'] = 'You are not allowed to do that!'
                         return HttpResponse(json.dumps(response_data), content_type="application/json")
@@ -259,11 +278,22 @@ def add_sprint(request, pk):
     
 def close_sprint(request, pk):
     if request.method == 'POST':
+
+        response_data = {}
+        #If all tasks are not in backlog or done
+        if SprintTasks.objects.filter(sprint__pk = pk).exclude(Q(task__status='DO') | Q(task__status='BA')).count() != 0:
+            response_data['error_message'] = 'All tasks must be done or backloged!'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        
+        #We change the task end status of each sprinttask
+        for st in SprintTasks.objects.filter(sprint__pk = pk):
+            st.task_end_status = st.task.status
+            st.save()
+            
         sprint = Sprint.objects.get(pk=pk)
         sprint.is_closed = True
         sprint.save()
         
-        response_data = {}
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         raise Http404
