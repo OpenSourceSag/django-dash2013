@@ -1,11 +1,10 @@
 Django Dash 2013 (OpenSourceSag)
 ============
 
-This application allow you to create and manage your project in a SCRUM way.
+This application allows you to create and manage your project in a SCRUM way.
 
 Installation
 ------------
-
 1. To set up the environment, you need to run the command:
 python manage.py install your_username your_email
 
@@ -15,11 +14,12 @@ With these two parameters ('your_username' and 'your_email') a manager account w
 2. You can launch the server with this command:
 python manage.py runserver 127.0.0.1 --setting agile_board.settings.local
 
+
 3. You can now login to our interface by going to the address:
 127.0.0.1
 
 
-How to user it ?
+How to use it ?
 ----------------
 1. Log in to our interface
 
