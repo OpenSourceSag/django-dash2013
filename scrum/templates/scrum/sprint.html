@@ -5,17 +5,16 @@
     <link href="{% static 'scrum/css/sprint.css' %}" rel="stylesheet" media="screen">
 {% endblock %}
 {% block content %}
-    <header class="row">
-        <h2 id=sprint_title class="col-xs-12 title_font" type="text" autofocus=autofocus>{{ sprint.project.name }} - Sprint #{{ sprint.number }}</h2>
-        {% if can_close_sprint %}<button id=sprint-close-button onclick="CloseSprint({{sprint.id}})">Close this sprint</button>{% endif %}
-
-    </header>
-    <div class="row">
+    <div id=whiteboard_bg class="row">
+        <header id=sprint_head class="row">
+            <h2 id=sprint_title class="col-xs-12 title_font" type="text" autofocus=autofocus>{{ sprint.project.name }} - Sprint #{{ sprint.number }}</h2>
+            {% if can_close_sprint %}<button id=sprint-close-button onclick="CloseSprint({{sprint.id}})">Close this sprint</button>{% endif %}
+        </header>
         <section id=todo class="col-sm-3">
             <h3 class="title_font">{% trans 'To do' %}</h3>
             <ul>
                 {% for todo in todos %}
-                    <li><div data-id={{ todo.id }} class="post-it text_font">{{ todo.title }}</div></li>
+                    <li><div data-id={{ todo.id }} class="post-it ">{{ todo.title }}</div></li>
                 {% empty %}
                     <li>{% trans 'Yeah, nothing to do!' %}</li>
                 {% endfor %}
@@ -26,7 +25,9 @@
             <h3 class="title_font">{% trans 'Doing' %}</h3>
             <ul>
                 {% for doing in doings %}
-                    <li><div data-id={{ doing.id }} class="post-it text_font">{{doing}}"</div></li>
+                    <li>
+                        <div data-id={{ doing.id }} class="post-it ">{{doing}}</div>
+                    </li>
                 {% empty %}
                     <li>{% trans 'Doing Nothing?!' %}</li>
                 {% endfor %}
@@ -37,7 +38,10 @@
             <h3 class="title_font">{% trans 'Done' %}</h3>
             <ul>
                 {% for done in dones %}
-                    <li><div data-id={{ done.id }} class="post-it text_font">{{done}}"</div></li>
+                    <li>
+                        <div data-id={{ done.id }} class="post-it ">{{done}}</div>
+                        <div>{{ done.user.email }}</div>
+                    </li>
                 {% empty %}
                     <li>{% trans 'Nothing to done?!' %}</li>
                 {% endfor %}
@@ -49,7 +53,10 @@
                 <h3 class="title_font">{% trans 'In problems' %}</h3>
                 <ul>
                    {% for bug in bugs %}
-                        <li><div data-id={{ bug.id }} class="post-it text_font">{{bug}}"</div></li>
+                        <li>
+                            <div data-id={{ bug.id }} class="post-it ">{{bug}}</div>
+                            <div>{{ bug.user.email }}</div>
+                        </li>
                     {% empty %}
                         <li>{% trans 'No problems. :)' %}</li>
                     {% endfor %}
@@ -59,7 +66,7 @@
                 <h3 class="title_font">{% trans 'Backlog' %}</h3>
                 <ul>
                     {% for backlog in backlogs %}
-                        <li><div data-id={{ backlog.id }} class="post-it text_font">{{backlog}}"</div></li>
+                        <li><div data-id={{ backlog.id }} class="post-it ">{{backlog}}</div></li>
                     {% empty %}
                         <li>{% trans 'No backlogs' %}</li>
                     {% endfor %}

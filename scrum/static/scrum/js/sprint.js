@@ -38,7 +38,7 @@ function CloseSprint(sprintId)
 }
 
 $(function() {
-    $(".post-it").draggable({
+    $("li").draggable({
         appendTo: "body",
         helper: "clone"
     });
@@ -48,7 +48,7 @@ $(function() {
         accept: ":not(.ui-sortable-helper)",
         drop: function( event, ui ) {
             $(this).find(".placeholder").remove();
-            var id = ui.draggable.data('id');
+            var id = ui.draggable.find('.post-it').data('id');
             var postItTag = ui.draggable.appendTo( this );
             setTaskStatus(id, 'TO', postItTag);
         }
@@ -59,7 +59,7 @@ $(function() {
         accept: ":not(.ui-sortable-helper)",
         drop: function( event, ui ) {
             $(this).find(".placeholder").remove();
-            var id = ui.draggable.data('id');
+            var id = ui.draggable.find('.post-it').data('id');
             var postItTag = ui.draggable.appendTo( this );
             setTaskStatus(id, 'IN', postItTag);
         }
@@ -70,7 +70,7 @@ $(function() {
         accept: ":not(.ui-sortable-helper)",
         drop: function( event, ui ) {
             $(this).find(".placeholder").remove();
-            var id = ui.draggable.data('id');
+            var id = ui.draggable.find('.post-it').data('id');
             var postItTag = ui.draggable.appendTo( this );
             setTaskStatus(id, 'DO', postItTag);
         }
@@ -81,7 +81,7 @@ $(function() {
         accept: ":not(.ui-sortable-helper)",
         drop: function( event, ui ) {
             $(this).find(".placeholder").remove();
-            var id = ui.draggable.data('id');
+            var id = ui.draggable.find('.post-it').data('id');
             var postItTag = ui.draggable.appendTo( this );
             setTaskStatus(id, 'PR', postItTag);
         }
@@ -92,7 +92,7 @@ $(function() {
         accept: ":not(.ui-sortable-helper)",
         drop: function( event, ui ) {
             $(this).find(".placeholder").remove();
-            var id = ui.draggable.data('id');
+            var id = ui.draggable.find('.post-it').data('id');
             var postItTag = ui.draggable.appendTo( this );
             setTaskStatus(id, 'BA', postItTag);
         }
