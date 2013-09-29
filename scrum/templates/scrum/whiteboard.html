@@ -40,7 +40,7 @@
                 <ul>
                     {% for sprint in project.sprints.all %}
                         <li>
-                            <div class="sprint_number{% if forloop.last%} visible_sprint{% endif %}">Sprint #{{ sprint.number }}<div>
+                            <div class="sprint_number{% if forloop.last%} visible_sprint{% endif %}">Sprint #{{ sprint.number }}</div>
                             <ul data-id="{{ sprint.id }}" class="sprint_tasks">
                                 {% for task in sprint.tasks.all %}
                                     <li data-id="{{ task.id }}"><span class="glyphicon glyphicon-remove"></span>{{ task.title }}</li>

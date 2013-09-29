@@ -90,7 +90,7 @@ class Sprint(models.Model):
 
     def save(self, *args, **kwargs):
         if self.id is None:
-            self.number = Sprint.objects.filter(project_id=self.project_id).aggregate(Max('number'))['number__max'] +1
+            self.number = (Sprint.objects.filter(project_id=self.project_id).aggregate(Max('number'))['number__max'] or 0) + 1
 
         super(Sprint, self).save(*args, **kwargs)
 
