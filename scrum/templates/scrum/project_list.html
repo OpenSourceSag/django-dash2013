@@ -10,10 +10,16 @@
     </header>
     <div class="row">
         
-        <section id=projects class="col-sm-4">
+        <section id=project_list class="col-sm-8">
                 <ul>
                 {% for project in object_list %}
-                    <li><h3 data-id={{ project.id }} class="whiteboard_field text_font" >{{project}}</h3></li>
+                    <li>
+                        <span class="text_font" >{{project}}</span>
+                        <a href="{% url 'project' project.id %}" class="title_font">Whiteboard</a>
+                        {% for sprint in project.sprints.active %}
+                            <a href="{% url 'sprint' sprint.id %}" class="title_font">Sprint</a>
+                        {% endfor %}
+                    </li>
                     {% empty %}
                     <li>No projects yet... what are you doing?!</li>
                 {% endfor %}

@@ -26,7 +26,7 @@ class Story(models.Model):
     title = models.CharField(max_length=255)
     note = models.TextField(blank=True)
     last_modified = models.DateTimeField(auto_now=True)
-    project = models.ForeignKey(Project, related_name='Story_project')
+    project = models.ForeignKey(Project, related_name='stories')
     estimated_time = models.FloatField(validators = [MinValueValidator(0), MaxValueValidator(5)])
 
     class Meta:
@@ -36,6 +36,12 @@ class Story(models.Model):
         return "%s" % (self.title, )
 
 
+class TaskManager(models.Manager):
+    use_for_related_fields = True
+
+    def unassigned(self):
+        return self.filter(sprint__id__isnull=True)
+
 class Task(models.Model):
     title = models.CharField(max_length=255)
     note = models.TextField(blank=True)
@@ -44,6 +50,7 @@ class Task(models.Model):
     assigned_to = models.ManyToManyField(User, related_name='Task_users', blank=True, null=True)
     story = models.ForeignKey(Story, related_name='Task_story')
     estimated_time = models.FloatField(validators = [MinValueValidator(0), MaxValueValidator(8)])
+    objects = TaskManager()
 
     class Meta:
         ordering = ('id',)
@@ -53,6 +60,16 @@ class Task(models.Model):
         return "%s" % (self.title,)
 
 
+class SprintManager(models.Manager):
+    use_for_related_fields = True
+
+    def active(self):
+        sprint = self.filter(is_closed=False).order_by('number')[:1]
+        if sprint.count() == 1:
+            return sprint
+        else:
+            return ()
+
 
 class Sprint(models.Model):
     number = models.IntegerField()
@@ -60,6 +77,7 @@ class Sprint(models.Model):
     project = models.ForeignKey(Project, related_name='sprints')
     last_modified = models.DateTimeField(auto_now=True)
     tasks = models.ManyToManyField(Task, through='SprintTasks', blank=True, null=True)
+    objects = SprintManager()
 
     class Meta:
         ordering = ('number',)
@@ -73,7 +91,7 @@ class SprintTasks(models.Model):
     sprint = models.ForeignKey(Sprint, related_name='sprints')
     task = models.ForeignKey(Task, related_name='tasks')
     task_end_status = models.CharField(max_length=2, choices=TASKS_STATUS)
-    
+
     class Meta:
         unique_together = ('sprint', 'task')
 

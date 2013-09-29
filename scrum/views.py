@@ -32,7 +32,7 @@ class SprintView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(SprintView, self).get_context_data(**kwargs)
         sprint = kwargs.get('object')
-        
+
         #Get all tasks
         sprint_tasks = sprint.tasks.all()
 
@@ -56,14 +56,13 @@ class WhiteBoardView(DetailView):
 
         #Get project's stories
         project = kwargs.get('object')
-        project_stories = Story.objects.filter(project=project)
+        #project_stories = Story.objects.filter(project=project)
         #Get project's tasks
-        project_tasks = Task.objects.all().exclude(pk__in=SprintTasks.objects.all().values_list('task'))
+        project_tasks = Task.objects.unassigned().filter(story__project_id=project.id)
         #Get project's tasks with a status backlog in a sprint with a end status backlog
-        project_tasks_backlog = Task.objects.filter(pk__in=SprintTasks.objects.filter(task_end_status='BA', task__status='BA').values_list('task', flat=True))
+        project_tasks_backlog = Task.objects.filter(pk__in=SprintTasks.objects.filter(task_end_status='BA', task__status='BA', task__story__project_id=project.id).values_list('task', flat=True))
 
         #Set template's data
-        context['stories'] = project_stories
         context['tasks'] = project_tasks
         context['backlogs'] = project_tasks_backlog
 
@@ -73,7 +72,7 @@ class WhiteBoardView(DetailView):
 def add_story(request, pk_project):
     if request.method == 'POST':
         response_data = {}
-        
+
         #Add the project to post values
         post_values = request.POST.copy()
         post_values['project'] = pk_project
@@ -119,7 +118,7 @@ def add_task(request, pk_project):
     if request.method == 'POST':
         response_data = {}
 
-       
+
         post_values = request.POST.copy()
         post_values['project'] = pk_project
         post_values['status'] = 'TO'
@@ -143,11 +142,11 @@ def update_task(request, pk_task):
 
         if pk_task:
             task = Task.objects.get(pk=pk_task)
-            
+
             #Add the task's status to post values
             post_values = request.POST.copy()
             post_values['status'] = task.status
-            
+
             #If a POST status exist (update a task's status)
             post_status = request.POST.get('status', None)
             if post_status:
@@ -155,20 +154,20 @@ def update_task(request, pk_task):
                 post_values['estimated_time'] = task.estimated_time
                 post_values['story'] = task.story.pk
                 post_values['title'] = task.title
-                
+
                 #if in progress, affect user
                 if post_status == 'IN':
                     post_values['assigned_to'] = request.user.pk
-                
+
                 #Only manager can move to backlog
                 elif post_status == 'BA':
                     #If the user is not a manager
                     if not(any(s.lower() == 'manager' for s in request.user.groups.values_list('name',flat=True))):
-                        
+
                         response_data['error_message'] = 'You are not allowed to do that!'
                         return HttpResponse(json.dumps(response_data), content_type="application/json")
-                    
-                    
+
+
             #Call form with post values
             f = TaskForm(post_values, instance=task)
             if f.is_valid():
@@ -222,7 +221,7 @@ def update_project(request, pk_project):
 def add_sprint_task(request):
     if request.method == 'POST':
         post_data = {}
-        
+
         #Add the task, sprint and task_end_status to post values
         post_data['task_end_status'] = 'DO'
         post_data['sprint'] = request.POST.get('sprint',None)
@@ -243,7 +242,7 @@ def add_sprint_task(request):
 def add_sprint(request):
     if request.method == 'POST':
         post_data = {}
-        
+
         #Add the task, sprint and task_end_status to post values
         post_data['task_end_status'] = 'DO'
         post_data['sprint'] = request.POST.get('sprint',None)
@@ -259,8 +258,8 @@ def add_sprint(request):
         return HttpResponse()
     else:
         raise Http404
-    
-    
+
+
 class ProjectListView(ListView):
     model = Project
 
@@ -292,10 +291,10 @@ def sign_up(request):
             new_user.is_staff = form.cleaned_data['is_staff']
             new_user.is_superuser = form.cleaned_data['is_superuser']
             new_user.save()
-            
+
             # redirect, or however you want to get to the main view
             return HttpResponseRedirect('/login')
     else:
-        form = UserForm() 
+        form = UserForm()
 
-    return render(request, 'scrum/registration/sign_up.html', {'form': form}) 
+    return render(request, 'scrum/registration/sign_up.html', {'form': form})
