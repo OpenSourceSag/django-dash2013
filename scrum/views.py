@@ -265,7 +265,7 @@ def add_sprint(request, pk):
     if request.method == 'GET':
         newSprint = Sprint.objects.create(project_id=pk)
         response = {'id': newSprint.id, 'number': newSprint.number}
-        return HttpResponse(json.dumps(response))
+        return HttpResponse(json.dumps(response), content_type="application/json")
     else:
         raise Http404
 
