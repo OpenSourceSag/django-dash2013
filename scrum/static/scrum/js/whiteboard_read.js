@@ -34,7 +34,7 @@ function onStoryFieldClick(e){
 $(function() {
     $('#stories').on('click','div',onStoryFieldClick)
 
-    $('.sprint_number').click(function(){ $(this).toggleClass('visible_sprint'); });
+    $('.sprint_number').click(function(){ $(this).parent().find('ul').toggleClass('visible_sprint'); });
     
     
 });

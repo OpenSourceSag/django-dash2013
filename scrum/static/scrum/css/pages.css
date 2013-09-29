@@ -11,6 +11,13 @@ ul{
     list-style: disc;
     padding-left: 40px;
 }
+.text_font{
+    font-size: 24px;
+}
+
+#sprint_title{
+    font-size: 36px;
+}
 
 .whtbrd-btn, .sprint-btn{
     background: #e0e0e0;
@@ -20,12 +27,7 @@ ul{
     display: inline-block;
     padding: 0 10px;
     margin-left: 10px;
+    box-shadow: 3px 3px 1px #888888;
+    color: #1a3d5f;
 }
 
-/* .sprint-btn{ */
-/*     text-indent: -99999999px; */
-/*     background: url('../images/btn_sprint.png'); */
-/*     display: inline-block; */
-/*     width: 54px; */
-/*     height: 19px; */
-/* } */

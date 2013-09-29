@@ -1,29 +1,22 @@
 {% extends '_layout/base.html' %}
 {% load i18n %}
 {% load static %}
-
+{% load url from future %}
 {% block extra_css %}
-    <link href="" rel="stylesheet" media="screen">
+    <link href="{% static 'scrum/css/login.css' %}" rel="stylesheet" media="screen">
 {% endblock %}
+
+{% block header %}
+{% endblock %}
+
 {% block content %}
-    <header class="row">
-    </header>
     <div class="row">
-        
-        <section id=logo class="col-sm-4">
-          
+        <section id=login class="col-md-offset-2 col-sm-4">
+            <img src="{% static 'scrum/images/logo.png' %}" width=371 height=247 >
         </section>
-            
         <section id=login class="col-sm-4">
             <h3>{% trans 'You are logged out' %}</h3>
-            <a href="{% url 'login' %}" class="button"><span class="btn">Login</span></a>
+            <a href="{% url 'login' %}" class=""><button class="login-btn">Login</span></a>
         </section>
-        
-        </section>
-        
     </div>
-{% endblock %}
-
-{% block extra_js %}
-    <script src=""></script>
 {% endblock %}

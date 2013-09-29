@@ -1,13 +1,33 @@
+a, a:hover, a:link, a:active{
+    text-decoration: none;
+}
+
+h3{
+    font-size: 36px;
+}
+
+#stories h3{
+    color: #4158a4;
+}
+
+#tasks h3{
+    color: #4c895f;
+}
+
+#sprints h3{
+    color: #ab0d24;
+}
 .sprint_tasks{
     display: none;
+    font-size: 16px;
 }
 
 #tasks li {
     display: none;
 }
 
-.visible_sprint ul {
-    display: block;
+.visible_sprint{
+    display: block !important;
 }
 
 .visible_task{
@@ -18,9 +38,23 @@
     background-color: #00A;
 }
 
+#project_head{
+    color: #868886;
+    text-align: center;
+}
+
+#project_title{
+    font-size: 48px;
+}
+
+#project_description{
+    font-size: 22px;
+}
+
 #whiteboard_bg {
     background-color: #FFF;
     padding: 40px;
+    padding-bottom: 70px;
     background-image: url('../images/pencils.png'), url('../images/board_tl.png'), url('../images/board_tr.png'), url('../images/board_bl.png'), url('../images/board_br.png'), url('../images/board_t.png'), url('../images/board_l.png'), url('../images/board_r.png'), url('../images/board_b.png'), url('../images/doodle_left.png'), url('../images/doodle_right.png');
     background-position: bottom, top left, top right, bottom left, bottom right, top, left, right, bottom, top left, top right;
     background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat-x, repeat-y, repeat-y, repeat-x, no-repeat, no-repeat;
