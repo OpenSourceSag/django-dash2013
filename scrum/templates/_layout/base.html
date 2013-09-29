@@ -69,6 +69,26 @@
                 }
             }
         });
+        if (window.addEventListener) {
+            var valid = false;
+            var index = 0;
+            var konami = [38,38,40,40,37,39,37,39,66,65,13];
+
+            window.addEventListener("keydown", function(e){
+                if (e.keyCode === konami[index])
+                {
+                    index++; //valid key at the valid point
+
+                    if (index == 11)
+                    {
+                        window.location = "http://www.youtube.com/watch?v=UGtKGX8B9hU";
+                    }
+                } else {
+                    // incorrect code restart
+                    index = 0;
+                }
+        });
+        }
     </script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{% static 'scrum/js/bootstrap.min.js' %}"></script>
