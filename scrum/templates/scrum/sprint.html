@@ -40,7 +40,7 @@
                 {% for done in dones %}
                     <li>
                         <div data-id={{ done.id }} class="post-it ">{{done}}</div>
-                        <div>{{ done.user.email }}</div>
+                        <div>{{ done.assigned_to.username }}</div>
                     </li>
                 {% empty %}
                     <li>{% trans 'Nothing to done?!' %}</li>
