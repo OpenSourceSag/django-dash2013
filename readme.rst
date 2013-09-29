@@ -27,11 +27,11 @@ How to user it ?
 
 3. You are now on your new project page. 
    The first field is the project name and the second one is it description.
-   You can add stories easily with the field bellow 'Stories'
+   You can add stories easily with the field '___________' bellow 'Stories'. To add or update a story or a task, press Enter or Tab	
    You can add tasks to a story by selecting a story first. The task will be associated with the selected story.
-   To add a sprint, just click on the '+' next to it. To add task to a sprint, just use drag and drop.
+   To add a sprint, just click on the '+' next to it. To add task to a sprint, just drag and drop a task by clicking on the '*' next to it.
    
-4. You can now return to the main page (127.0.0.1) and you can see your project. The whiteboard button will redirect you to your project page.
+4. You can now return to the main page with the link 'Back to project list' and you can see your project. The whiteboard button will redirect you to your project page.
    If you created a sprint, you can click on the sprint button, you'll be redirected to the sprint page.
    Here you can see all the sprint's task and easily change their status by drag and drop them.
 
