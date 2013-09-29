@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 from scrum.views import *
 
@@ -26,4 +27,10 @@ urlpatterns = patterns('',
 
     url(r'^login/?$', 'django.contrib.auth.views.login', {'template_name': 'scrum/registration/login.html', }, name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'scrum/registration/logged_out.html', }, name='logout'),
+)
+
+urlpatterns += patterns('',
+    (r'^static/(.*)$', 'django.views.static.serve', {
+        'document_root': settings.STATIC_ROOT
+    }),
 )
