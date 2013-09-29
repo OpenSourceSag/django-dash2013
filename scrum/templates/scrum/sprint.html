@@ -25,11 +25,6 @@
             <ul>
                 {% for doing in doings %}
                     <li><div data-id={{ doing.id }} class="post-it text_font">{{doing}}"</div></li>
-                    {% for user in doing.assigned_to.all %}
-                        <li>{{user.username}}</li>
-                        {% empty %}
-                        <li>{% trans 'Nobody is doing this task?!' %}</li>
-                    {% endfor %}
                 {% empty %}
                     <li>{% trans 'Doing Nothing?!' %}</li>
                 {% endfor %}

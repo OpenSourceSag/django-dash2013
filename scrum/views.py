@@ -175,6 +175,16 @@ def update_task(request, pk_task):
             if f.is_valid():
                 task = f.save()
                 response_data['task_pk'] = task.pk
+                
+                first_name = request.user.first_name
+                last_name = request.user.last_name
+                
+                #Send username if no first_name nor last_name
+                if first_name or last_name:
+                    response_data['full_name'] = ' '.join(filter(None, (first_name, last_name)))
+                else:
+                    response_data['full_name'] = request.user.username
+                print response_data['full_name']
             else:
                 print f.errors
 
@@ -256,7 +266,6 @@ class ProjectListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ProjectListView, self).get_context_data(**kwargs)
         sprint = kwargs.get('object')
-        #
         ##Get all tasks
         #sprint_tasks = sprint.tasks.all()
         #
