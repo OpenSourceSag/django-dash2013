@@ -7,7 +7,7 @@
 
 {% block header %}
     {{ block.super }}
-    <h2 id=sprint_title class="col-xs-12 title_font" type="text" autofocus=autofocus>{% trans 'Projects' %}</h2>
+    <h2 id=sprint_title class="col-xs-12 title_font" type="text" autofocus=autofocus>{% trans 'Projects' %} <a href="{% url 'addproject' %}">+</a></h2>
 {% endblock %}
 
 {% block content %}
