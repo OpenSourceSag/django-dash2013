@@ -29,8 +29,8 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'scrum/registration/logged_out.html', }, name='logout'),
 )
 
-# urlpatterns += patterns('',
-#     (r'^static/(.*)$', 'django.views.static.serve', {
-#         'document_root': settings.STATIC_ROOT
-#     }),
-# )
+urlpatterns += patterns('',
+    (r'^static/(.*)$', 'django.views.static.serve', {
+        'document_root': settings.STATIC_ROOT
+    }),
+)
