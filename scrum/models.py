@@ -12,7 +12,7 @@ TASKS_STATUS = (('TO', 'To do'),
 
 
 class Project(models.Model):
-    name = models.CharField(unique=True, max_length=255)
+    name = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)
     users = models.ManyToManyField(User, related_name='Project_users', blank=True, null=True)
 
