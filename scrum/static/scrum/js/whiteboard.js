@@ -142,6 +142,9 @@ function onStoryFieldKeydown(e){
         storyField.find('input').focus();
     }
 }
+function onStoryFieldEnter(e){
+    e.target;
+}
 
 function onStoryFieldChange(e){
     saveStory(e.target);
@@ -166,6 +169,7 @@ $(function() {
 
     $('#stories').on('change','input',onStoryFieldChange);
     $('#stories').on('keydown','input',onStoryFieldKeydown);
+    $('#stories').on('enter','input',onStoryFieldEnter);
 
     $('#tasks').on('change','input',onTaskFieldChange);
     $('#tasks').on('keydown','input',onTaskFieldKeydown);
