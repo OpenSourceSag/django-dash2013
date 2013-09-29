@@ -5,12 +5,9 @@ from django.contrib.auth.decorators import login_required
 from scrum.views import *
 
 
-
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^$', login_required(ProjectListView.as_view()), name='projectlist'),
@@ -26,8 +23,7 @@ urlpatterns = patterns('',
     url(r'^project/add/$', login_required(add_project), name='addproject'),
     url(r'^task/(?P<pk_task>[0-9]+)/update-status/$', login_required(update_task), name='updatetaskstatus'),
 
-    url(r'^login/?$','django.contrib.auth.views.login',{'template_name':'scrum/registration/login.html', }, name='login'),
-    url(r'^logout/$','django.contrib.auth.views.logout',{'template_name':'scrum/registration/logged_out.html', }, name='logout'),
+    url(r'^login/?$', 'django.contrib.auth.views.login', {'template_name': 'scrum/registration/login.html', }, name='login'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'scrum/registration/logged_out.html', }, name='logout'),
     url(r'^signup/$', sign_up, name='signup'),
-
 )

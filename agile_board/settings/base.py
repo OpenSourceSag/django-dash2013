@@ -133,7 +133,7 @@ INSTALLED_APPS = (
 )
 
 LOGIN_URL = '/login'
-LOGIN_REDIRECT_URL  = '/project'
+LOGIN_REDIRECT_URL  = '/'
 LOGOUT_URL = '/logout'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'

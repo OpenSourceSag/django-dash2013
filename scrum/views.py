@@ -1,25 +1,12 @@
-from django.conf import settings
-from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from .models import Project, Story, Task, Sprint, SprintTasks, TASKS_STATUS
-from django.http import HttpResponseNotFound, HttpResponse, Http404, HttpResponseRedirect
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
-
-from .forms import ProjectForm, StoryForm, TaskForm, SprintForm, SprintTasksForm, UserForm
-from django.contrib.auth.forms import AuthenticationForm
-from django.views.decorators.debug import sensitive_post_parameters
-from django.views.decorators.csrf import csrf_protect
-from django.views.decorators.cache import never_cache
-from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout, get_user_model
-from django.contrib.sites.models import get_current_site
-from django.template.response import TemplateResponse
-from django.utils.http import is_safe_url
-from django.shortcuts import resolve_url, render
-from django.utils.translation import ugettext as _
-from django.views.generic.edit import CreateView
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.shortcuts import render
+
+from .models import Project, Story, Task, Sprint, SprintTasks
+from .forms import ProjectForm, StoryForm, TaskForm, SprintForm, SprintTasksForm, UserForm
 
 import string
 import json
@@ -147,9 +134,24 @@ def update_task(request, pk_task):
             post_values = request.POST.copy()
             post_values['status'] = task.status
 
-            #If a POST status exist (update a task's status)
+            #If a POST status exist (update a task's status) 
             post_status = request.POST.get('status', None)
             if post_status:
+                
+                #Get the referer URL
+                referer_url = request.META.get('HTTP_REFERER', None)
+                
+                #If called from the Sprint page
+                if referer_url and '/sprint/' in referer_url:
+                    
+                    sprint_id = referer_url[referer_url.find('/sprint/')+8:referer_url.rfind('/')]
+                    sprint = Sprint.objects.get(pk=sprint_id)
+                    
+                    #If the sprint is closed
+                    if sprint.is_closed:
+                        response_data['error_message'] = 'This sprint is closed!'
+                        return HttpResponse(json.dumps(response_data), content_type="application/json")
+
                 post_values['status'] = post_status
                 post_values['estimated_time'] = task.estimated_time
                 post_values['story'] = task.story.pk
