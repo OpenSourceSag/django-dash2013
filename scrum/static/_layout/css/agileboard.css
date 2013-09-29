@@ -9,6 +9,9 @@ ul{
 html, body{
     min-height: 100%;
 }
+html{
+    position: relative;
+}
 
 body{
     background-image: url('../images/footer.png'), url('../images/shadow.png'), url('../images/fond.gif');
@@ -19,10 +22,19 @@ body{
 h1 {
     display: none;
 }
+
+#container{
+    padding-bottom: 150px;
+}
+
 #logo_top {
     width: 170px;
     height: 114px;
     margin: 30px 0 0 25px;
+}
+
+.clear_all{
+    clear: both;
 }
 
 footer{
@@ -33,7 +45,6 @@ footer{
     text-align: right;
     color: #1a3d5f;
     font-size: 18px;
-    padding-top: 30px;
 }
 
 h4{

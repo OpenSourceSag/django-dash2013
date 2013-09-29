@@ -5,65 +5,67 @@
     <link href="{% static 'scrum/css/whiteboard.css' %}" rel="stylesheet" media="screen">
 {% endblock %}
 {% block content %}
-    <header class="row">
-        <div id=project_title class="col-xs-12 whiteboard_field title_font" type="text" autofocus=autofocus>{{ project.name }}</div>
-        <div id=project_description rows=2 class="col-xs-12 whiteboard_field text_font">{{ project.description}}</div>
-    </header>
-    <div class="row">
-        
-        <section id=stories class="col-sm-4">
-            <h3 class="title_font">{% trans 'Stories' %}</h3>
-            <ul>
-                {% for story in project.stories.all %}
-                    <li><div data-id={{ story.id }} class="whiteboard_field text_font">{{story}}</div></li>
-                {% endfor %}
-            </ul>
+    <div id=whiteboard_bg>
+        <section id=project_head class="row">
+            <div id=project_title class="col-xs-12 whiteboard_field title_font" type="text" autofocus=autofocus>{{ project.name }}</div>
+            <div id=project_description rows=2 class="col-xs-12 whiteboard_field text_font">{{ project.description}}</div>
         </section>
+        <div class="row">
             
-        <section id=tasks class="col-sm-4">
-            <h3 class="title_font">{% trans 'Tasks' %}</h3>
-            <ul>
-                {% for task in tasks %}
-                    <li data-story="{{ task.story_id }}">
-                        <span class="glyphicon glyphicon-chevron-right">
-                        </span><div data-id={{ task.id }} class="whiteboard_field text_font">{{task}}</div>
-                    </li>
-                {% endfor %}
-            </ul>
-        </section>
-        
-        <section id=sprints_backlogs class="col-sm-4">
-            <div id=sprints class="row">
-                <h3 class="title_font">{% trans 'Sprints' %}</h3>
+            <section id=stories class="col-sm-4">
+                <h3 class="title_font">{% trans 'Stories' %}</h3>
                 <ul>
-                    {% for sprint in project.sprints.all %}
-                        <li>
-                            <div class="sprint_number{% if forloop.last%} visible_sprint{% endif %}">Sprint #{{ sprint.number }}</div>
-                            <ul data-id="{{ sprint.id }}" class="sprint_tasks">
-                                {% for task in sprint.tasks.all %}
-                                    <li data-id="{{ task.id }}"><span class="glyphicon glyphicon-remove"></span>{{ task.title }}</li>
-                                {% empty %}
-                                    <li>{% trans 'The sprint is empty. Put some gaz!' %}</li>
-                                {% endfor %}
-                            </ul>
+                    {% for story in project.stories.all %}
+                        <li><div data-id={{ story.id }} class="whiteboard_field text_font">{{story}}</div></li>
+                    {% endfor %}
+                </ul>
+            </section>
+                
+            <section id=tasks class="col-sm-4">
+                <h3 class="title_font">{% trans 'Tasks' %}</h3>
+                <ul>
+                    {% for task in tasks %}
+                        <li data-story="{{ task.story_id }}">
+                            <span class="glyphicon glyphicon-chevron-right">
+                            </span><div data-id={{ task.id }} class="whiteboard_field text_font">{{task}}</div>
                         </li>
-                    {% empty %}
-                        <li>{% trans 'No sprints here!' %}
                     {% endfor %}
                 </ul>
-            </div>
-            <div id=backlogs class="row">
-                <h3 class="title_font">{% trans 'backlog' %}</h3>
-                <ul>
-                    {% for task in backlogs %}
-                        <li data-id="{{ task.id }}">{{ task.title }}</li>
-                    {% empty %}
-                        <li>{% trans 'Oh yeah! No backlogs!' %}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </section>
-        
+            </section>
+            
+            <section id=sprints_backlogs class="col-sm-4">
+                <div id=sprints class="row">
+                    <h3 class="title_font">{% trans 'Sprints' %}</h3>
+                    <ul>
+                        {% for sprint in project.sprints.all %}
+                            <li>
+                                <div class="sprint_number{% if forloop.last%} visible_sprint{% endif %}">Sprint #{{ sprint.number }}</div>
+                                <ul data-id="{{ sprint.id }}" class="sprint_tasks">
+                                    {% for task in sprint.tasks.all %}
+                                        <li data-id="{{ task.id }}"><span class="glyphicon glyphicon-remove"></span>{{ task.title }}</li>
+                                    {% empty %}
+                                        <li>{% trans 'The sprint is empty. Put some gaz!' %}</li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% empty %}
+                            <li>{% trans 'No sprints here!' %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div id=backlogs class="row">
+                    <h3 class="title_font">{% trans 'backlog' %}</h3>
+                    <ul>
+                        {% for task in backlogs %}
+                            <li data-id="{{ task.id }}">{{ task.title }}</li>
+                        {% empty %}
+                            <li>{% trans 'Oh yeah! No backlogs!' %}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+            
+        </div>
     </div>
 {% endblock %}
 

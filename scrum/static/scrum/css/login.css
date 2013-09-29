@@ -17,7 +17,7 @@ header {
 
 .login-btn{
     color: #cdcdcd;
-    font-size: 35px;
+    font-size: 25px;
     font-weight: bold;
     background: url('../images/btn_login.png');
     cursor:pointer;
