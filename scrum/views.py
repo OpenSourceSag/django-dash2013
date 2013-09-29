@@ -38,6 +38,10 @@ class SprintView(DetailView):
         return context
 
 
+class ProjectListView(ListView):
+    model = Project
+
+
 class WhiteBoardView(DetailView):
 
     model = Project
@@ -163,10 +167,11 @@ def update_task(request, pk_task):
                 #If called from the Sprint page
                 if referer_url and '/sprint/' in referer_url:
 
+                    #Get the sprint id
                     sprint_id = referer_url[referer_url.find('/sprint/')+8:referer_url.rfind('/')]
                     sprint = Sprint.objects.get(pk=sprint_id)
 
-                    #If the sprint is closed
+                    #If the sprint is closed, send error message
                     if sprint.is_closed:
                         response_data['error_message'] = 'This sprint is closed!'
                         return HttpResponse(json.dumps(response_data), content_type="application/json")
@@ -175,10 +180,18 @@ def update_task(request, pk_task):
                 post_values['estimated_time'] = task.estimated_time
                 post_values['story'] = task.story.pk
                 post_values['title'] = task.title
+                post_values['assigned_to'] = None
+                
+                if task.assigned_to:
+                    post_values['assigned_to'] = task.assigned_to.pk
 
                 #if in progress, affect user
                 if post_status == 'IN':
                     post_values['assigned_to'] = request.user.pk
+                  
+                #if to do, delete assignated user    
+                elif post_status == 'TO':
+                    post_values['assigned_to'] = None
 
                 #Only manager can move to or from backlog
                 elif (old_task_status != 'BA' and post_status == 'BA') or (old_task_status == 'BA' and post_status != 'BA'):
@@ -292,6 +305,3 @@ def close_sprint(request, pk):
     else:
         raise Http404
 
-
-class ProjectListView(ListView):
-    model = Project
